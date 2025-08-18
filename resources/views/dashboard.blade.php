@@ -86,11 +86,11 @@
                     <div class="flex items-center gap-2">
                         <!-- Filter buttons -->
                         <div class="flex gap-1">
-                            <button class="text-xs border rounded px-2 py-1">1D</button>
-                            <button class="text-xs border rounded px-2 py-1">1W</button>
-                            <button class="text-xs border rounded px-2 py-1">1M</button>
-                            <button class="text-xs border rounded px-2 py-1">3M</button>
-                            <button class="text-xs border rounded px-2 py-1">6M</button>
+                            <button class="text-xs border rounded px-2 py-1 text-black">1D</button>
+                            <button class="text-xs border rounded px-2 py-1 text-black">1W</button>
+                            <button class="text-xs border rounded px-2 py-1 text-black">1M</button>
+                            <button class="text-xs border rounded px-2 py-1 text-black">3M</button>
+                            <button class="text-xs border rounded px-2 py-1 text-black">6M</button>
                             <button class="text-xs border rounded px-2 py-1 bg-orange-400 text-white">1Y</button>
                         </div>
             
