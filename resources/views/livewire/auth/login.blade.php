@@ -85,7 +85,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="login" class="flex flex-col gap-6" data-theme="light">
+    <form wire:submit="login" class="flex flex-col gap-6 light">
         <!-- Email Address -->
         <flux:input
             wire:model="email"
