@@ -8,16 +8,16 @@
         <div
             x-data="appearanceSettings"
             x-init="init()"
-            class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-zinc-700 border p-1"
+            class="inline-flex items-center rounded-lg bg-gray-100  border p-1"
         >
-            <template x-for="option in ['light', 'dark', 'system']" :key="option">
+            <template x-for="option in ['light' 'system']" :key="option">
                 <button
                     @click="setMode(option)"
                     :class="[
                         'px-4 py-2 text-sm font-medium rounded-md transition',
                         mode === option
                             ? 'bg-yellow-400 text-white shadow'
-                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-600'
+                            : 'text-gray-600  hover:bg-gray-200 '
                     ]"
                     x-text="option.charAt(0).toUpperCase() + option.slice(1)"
                 ></button>
