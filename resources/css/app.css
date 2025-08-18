@@ -12,6 +12,14 @@
 .dark {
   all: unset;
 }
+:root {
+    /* Disable all Flux dark-mode color variables */
+    --color-accent: unset !important;
+    --color-accent-content: unset !important;
+    --color-accent-foreground: unset !important;
+  }
+  
+
 @layer base {
     input,
     textarea,
@@ -45,9 +53,7 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+   
 }
 
 /* @layer theme {
