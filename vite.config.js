@@ -15,4 +15,7 @@ export default defineConfig({
     server: {
         cors: true,
     },
+    css: {
+        transformer: 'postcss' // <- forces postcss instead of lightningcss
+      }
 });
