@@ -16,7 +16,24 @@
 .dark {
   all: unset;
 }
-
+@layer base {
+    input,
+    textarea,
+    select {
+      color: black !important;            /* text inside input */
+      background-color: white !important; /* background */
+    }
+  
+    input::placeholder,
+    textarea::placeholder {
+      color: #9ca3af !important; /* Tailwind gray-400 */
+      opacity: 1 !important;
+    }
+  
+    label {
+      color: black !important;
+    }
+  }
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
