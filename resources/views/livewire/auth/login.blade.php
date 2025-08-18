@@ -95,11 +95,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
             autofocus
             autocomplete="email"
             placeholder="email@example.com"
+           class="border border-black"
         />
 
         <!-- Password -->
         <div class="relative">
             <flux:input
+             class="border border-black"
                 wire:model="password"
                 :label="__('Password')"
                 type="password"
