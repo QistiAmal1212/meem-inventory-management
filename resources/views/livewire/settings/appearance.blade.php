@@ -26,7 +26,7 @@
     </x-settings.layout>
 </section>
 
-<script>
+{{-- <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('appearanceSettings', () => ({
             mode: 'system',
@@ -53,4 +53,4 @@
             }
         }));
     });
-</script>
+</script> --}}
