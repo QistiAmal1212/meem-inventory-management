@@ -26,7 +26,7 @@
     </x-settings.layout>
 </section>
 
-{{-- <script>
+<script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('appearanceSettings', () => ({
             mode: 'system',
@@ -46,11 +46,11 @@
                 document.documentElement.classList.remove('dark', 'light');
 
                 if (this.mode === 'dark') {
-                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.add('light');
                 } else if (this.mode === 'light') {
                     document.documentElement.classList.add('light');
                 }
             }
         }));
     });
-</script> --}}
+</script>

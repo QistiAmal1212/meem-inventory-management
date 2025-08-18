@@ -95,8 +95,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
             autofocus
             autocomplete="email"
             placeholder="email@example.com"
-             class="bg-white text-gray-900 border-gray-300 placeholder-gray-400 
-           dark:bg-white dark:text-gray-900 dark:border-gray-300 dark:placeholder-gray-400"
         />
 
         <!-- Password -->
