@@ -15,9 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->reportable(function (Throwable $e) {
-            $message = "🚨 *Exception:* `" . class_basename($e) . "`\n";
-            $message .= "**Message:** " . $e->getMessage() . "\n";
-            $message .= "**File:** " . $e->getFile() . ':' . $e->getLine();
+            $message = '🚨 *Exception:* `'.class_basename($e)."`\n";
+            $message .= '**Message:** '.$e->getMessage()."\n";
+            $message .= '**File:** '.$e->getFile().':'.$e->getLine();
 
             \App\Jobs\SendDiscordWebhook::dispatch($message); // or dispatchSync() for testing
         });

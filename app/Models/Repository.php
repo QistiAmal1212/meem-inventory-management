@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Repository extends Model
 {
     protected $fillable =
-    [
-     "name",
-     "path",
-    ];
+        [
+            'name',
+            'path',
+        ];
 }

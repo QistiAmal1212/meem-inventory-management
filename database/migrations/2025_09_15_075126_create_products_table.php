@@ -19,12 +19,12 @@ return new class extends Migration
             $table->unsignedTinyInteger('category_id');
             $table->unsignedTinyInteger('metal_id');
             $table->unsignedTinyInteger('grade_id');
-            $table->decimal('weight', 10, 4); 
-            $table->boolean('status')->default(1); 
+            $table->decimal('weight', 10, 4);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
-   
+
     /**
      * Reverse the migrations.
      */

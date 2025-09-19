@@ -9,18 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductInOut extends Model
 {
     protected $fillable =
-    [
-     "product_id",
-     "branch_id",
-     "in_out",
-     "user_id",
-     "event"
-    ];
+        [
+            'product_id',
+            'branch_id',
+            'in_out',
+            'user_id',
+            'event',
+        ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -30,5 +31,4 @@ class ProductInOut extends Model
     {
         return $this->belongsTo(Branch::class);
     }
-
 }

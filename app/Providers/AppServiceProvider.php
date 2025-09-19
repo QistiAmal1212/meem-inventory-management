@@ -31,11 +31,11 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(JobExceptionOccurred::class, function ($event) {
             $e = $event->exception;
-    
-            $message = "🚨 *Exception:* `" . class_basename($e) . "`\n";
-            $message .= "**Message:** " . $e->getMessage() . "\n";
-            $message .= "**File:** " . $e->getFile() . ':' . $e->getLine();
-    
+
+            $message = '🚨 *Exception:* `'.class_basename($e)."`\n";
+            $message .= '**Message:** '.$e->getMessage()."\n";
+            $message .= '**File:** '.$e->getFile().':'.$e->getLine();
+
             SendDiscordWebhook::dispatch($message);
         });
 

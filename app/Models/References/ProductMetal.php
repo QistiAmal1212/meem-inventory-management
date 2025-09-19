@@ -9,13 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductMetal extends Model
 {
     protected $fillable =
-    [
-     "name"
-    ];
+        [
+            'name',
+        ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
-
 }

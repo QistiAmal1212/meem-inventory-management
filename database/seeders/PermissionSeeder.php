@@ -29,16 +29,12 @@ class PermissionSeeder extends Seeder
 
         Permission::firstOrCreate(['name' => 'sales stock out']);
 
-       $branches = Branch::all();
+        $branches = Branch::all();
 
-       foreach($branches as $branch)
-       {
-         Permission::firstOrCreate(['name' => $branch->name]);
-       }
-       Permission::firstOrCreate(['name' => 'all branch']);
-
-        
+        foreach ($branches as $branch) {
+            Permission::firstOrCreate(['name' => $branch->name]);
+        }
+        Permission::firstOrCreate(['name' => 'all branch']);
 
     }
-
 }

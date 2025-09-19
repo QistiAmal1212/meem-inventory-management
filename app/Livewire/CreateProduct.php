@@ -5,38 +5,41 @@ namespace App\Livewire;
 use App\Models\References\ProductCategory;
 use App\Models\References\ProductGrade;
 use App\Models\References\ProductMetal;
-use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-use function Laravel\Prompts\textarea;
-
-#[Layout('components.layouts.app')] 
+#[Layout('components.layouts.app')]
 class CreateProduct extends Component
 {
     use WithFileUploads;
 
     public $categories = [];
+
     public $metals = [];
+
     public $greds = [];
 
     public $category;
+
     public $metal;
+
     public $gred;
 
     public $name;
+
     public $reference;
+
     public $weight;
+
     public $description;
+
     public $images = [];
 
     public $modalOpen = false;
+
     public $modalType;
+
     public $newValue;
 
     public function mount()
@@ -46,22 +49,19 @@ class CreateProduct extends Component
         $this->greds = ProductGrade::pluck('grade', 'id')->toArray();
     }
 
-
-
     public function addOption($type, $value)
     {
         if ($type === 'Category') {
             $this->categories[] = $value;
         } elseif ($type === 'Metal') {
-        
-            $this->metals[] = $value; 
+
+            $this->metals[] = $value;
         } elseif ($type === 'Gred') {
             $this->greds[] = $value;
         }
 
         $this->dispatch('reinit-select2');
     }
-
 
     public function submit()
     {
@@ -92,7 +92,7 @@ class CreateProduct extends Component
             'description' => $this->description,
         ]);
 
-        $this->reset(['name','reference','category','metal','gred','weight','description','images']);
+        $this->reset(['name', 'reference', 'category', 'metal', 'gred', 'weight', 'description', 'images']);
         $this->dispatchBrowserEvent('notify', ['message' => 'Product added successfully!']);
     }
 

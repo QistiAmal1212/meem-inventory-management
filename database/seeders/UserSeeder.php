@@ -14,61 +14,52 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-            // Admin User
-            $admin = User::firstOrCreate(
-                ['email' => 'admin@memeinventory.com'],
+        // Admin User
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@memeinventory.com'],
+            [
+                'name' => 'Admin User',
+                'password' => Hash::make('password'),
+            ]
+        );
+        $admin->assignRole('superadmin');
+
+        // Staff User
+        $staff = User::firstOrCreate(
+            ['email' => 'staff@memeinventory.com'],
+            [
+                'name' => 'Staff User',
+                'password' => Hash::make('password'),
+            ]
+        );
+        $staff->assignRole('staff');
+
+        $branches = Branch::all();
+
+        foreach ($branches as $branch) {
+            // Branch Manager
+            $BranchManager = User::firstOrCreate(
+                ['email' => 'manager'.$branch->name.'@memeinventory.com'],
                 [
-                    'name' => 'Admin User',
-                    'password' => Hash::make('password'), 
-                ]
-            );
-            $admin->assignRole('superadmin');
-    
-            // Staff User
-            $staff = User::firstOrCreate(
-                ['email' => 'staff@memeinventory.com'],
-                [
-                    'name' => 'Staff User',
+                    'name' => $branch->name.' Manager',
                     'password' => Hash::make('password'),
                 ]
             );
-            $staff->assignRole('staff');
-    
+            $BranchManager->givePermissionTo($branch->name);
+            $BranchManager->assignRole('manager');
 
-            $branches = Branch::all();
+            // sales User
+            $sales = User::firstOrCreate(
+                ['email' => 'sales'.$branch->name.'@memeinventory.com'],
+                [
+                    'name' => $branch->name.' Sales User',
+                    'password' => Hash::make('password'),
+                ]
+            );
+            $BranchManager->givePermissionTo($branch->name);
+            $sales->assignRole('sales');
 
-            foreach( $branches as $branch)
-            {
-                // Branch Manager 
-                $BranchManager = User::firstOrCreate(
-                    ['email' => 'manager'.$branch->name.'@memeinventory.com'],
-                    [
-                        'name' => $branch->name.' Manager',
-                        'password' => Hash::make('password'),
-                    ]
-                );
-                $BranchManager->givePermissionTo($branch->name);
-                $BranchManager->assignRole('manager');
-
-
-                // sales User
-                $sales = User::firstOrCreate(
-                    ['email' => 'sales'.$branch->name.'@memeinventory.com'],
-                    [
-                        'name' => $branch->name.' Sales User',
-                        'password' => Hash::make('password'),
-                    ]
-                );
-                $BranchManager->givePermissionTo($branch->name);
-                $sales->assignRole('sales');
-
-            }
-
-   
-    
-
-         
-         
-         
         }
+
+    }
 }

@@ -27,50 +27,6 @@
  --color-pg-primary-950: oklch(0.145 0 0);
 }
 
-/* force light mode */
-/* Table Head */
-.power-grid-table thead {
-  @apply !bg-white !text-black !border-b !border-gray-200;
-}
-
-/* Table Base */
-.power-grid-table {
-  @apply !bg-white !text-black !border-b !border-gray-200;
-}
-
-#power-grid-table-base {
-  @apply !px-3;  
-}
-
-/* Table Rows */
-.power-grid-table tbody tr {
-  @apply !bg-white !text-black !border-b !border-gray-200;
-}
-
-.power-grid-table thead tr th {
-  @apply  !text-black;
-}
-
-
-.power-grid-table tbody tr td {
-  @apply  !text-black ;
-}
-
-/* Footer */
-#pg-footer {
-  @apply !bg-white !text-black !border-white; 
-}
-
-#pg-footer div {
-  @apply  !text-black ; 
-}
-
-
-/* Base wrapper */
-#power-grid-table-base > div:nth-child(2) {
-  @apply !border-white; 
-}
-
 select {
   appearance: none !important; /* Remove native arrow */
   -webkit-appearance: none !important;
@@ -183,36 +139,11 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
-
 
 .fi-modal-window
 {
     @apply !h-[100vh] !ring-0 z-1000 pt-10 relative;
 
-}
-/* .fi-modal-header
-{
-    @apply !hidden;
-
-} */
-
-.dark .powergrid {
-  /* reset back to light styles */
-  background-color: #fff !important;
-  color: #000 !important;
-}
-
-#power-grid-table-container div:nth-of-type(3) {
-  border: none  !important; 
-}
-
-/* remove select ring */
-.pg-filter-container div div div select {
-  outline: none !important;
-  box-shadow: 0 0 0 2px #d1d5db;
 }
 
 .select2-container
@@ -249,35 +180,3 @@ select:focus[data-flux-control] {
 
 
 
-#toggle-filters button {
-  @apply !bg-white text-black ring-1 ring-gray-400; /* light gray background with ring */
-}
-
-
-
-
-/* Force buttons in toggle filters to have gray background always */
-#toggle-filters button svg{
-  @apply !bg-white !text-black; /* force background and text */
-}
-
-
-
-#toggle-filters button:hover,
-#toggle-filters button:focus {
-  @apply !bg-white; /* optional hover/focus effect */
-}
-
-
-/* Style the toggle-columns button */
-[data-cy="toggle-columns-product-table-wmohex-table"] {
-  @apply !bg-white text-black ring-1 ring-gray-400; 
-}
-[data-cy="toggle-columns-product-table-wmohex-table"] svg{
-  @apply text-black; 
-}
-
-[data-cy="toggle-columns-product-table-wmohex-table"]:hover,
-[data-cy="toggle-columns-product-table-wmohex-table"]:focus {
-  @apply !bg-white ring-2 ring-gray-500; 
-}

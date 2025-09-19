@@ -219,7 +219,7 @@
 
     <h2 class="text-lg font-semibold text-neutral-900 font-['Poppins'] mb-4 ml-3">Sales Report</h2>
 
-    <livewire:user-table/>
+    {{-- <livewire:user-table/> --}}
 </div>
 
 <br><br>

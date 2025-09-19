@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductStock extends Model
 {
     protected $fillable =
-    [
-      'product_id',
-      'quantity',
-      'branch_id',
-      'min_quantity',
-      'vault',
-    ];
+        [
+            'product_id',
+            'quantity',
+            'branch_id',
+            'min_quantity',
+            'vault',
+        ];
 
     public function product(): BelongsTo
     {

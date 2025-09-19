@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\References\Branch;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -29,7 +27,7 @@ class RoleSeeder extends Seeder
         $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage products']));
         $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage stocks']));
         $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage repositories']));
-            
+
         $sales = Role::firstOrCreate(['name' => 'sales']);
         $sales->givePermissionTo(Permission::firstOrCreate(['name' => 'sales stock out']));
     }

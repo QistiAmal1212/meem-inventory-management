@@ -8,21 +8,20 @@ use App\Models\References\ProductMetal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
     protected $fillable =
-    [
-      'name',
-      'description',
-      'sku',
-      'category_id',
-      'metal_id',
-      'grade_id',
-      'weight', 
-      'status',
-    ];
+        [
+            'name',
+            'description',
+            'sku',
+            'category_id',
+            'metal_id',
+            'grade_id',
+            'weight',
+            'status',
+        ];
 
     public function category(): BelongsTo
     {
@@ -38,7 +37,6 @@ class Product extends Model
     {
         return $this->belongsTo(ProductGrade::class);
     }
-
 
     public function image(): HasMany
     {
@@ -59,6 +57,4 @@ class Product extends Model
     {
         return $this->hasMany(productSale::class);
     }
-
-
 }

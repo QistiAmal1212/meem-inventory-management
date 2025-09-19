@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\BranchSelected;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Session;
 
 class StoreBranchIdInSession
@@ -22,8 +20,7 @@ class StoreBranchIdInSession
      */
     public function handle(BranchSelected $event): void
     {
-       
-       
+
         Session::put('branch_id', $event->branchId);
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\References\Branch;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductSale extends Model
@@ -45,5 +45,4 @@ class ProductSale extends Model
     {
         return $this->belongsTo(Branch::class);
     }
-
 }

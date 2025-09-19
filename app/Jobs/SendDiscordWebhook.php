@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 class SendDiscordWebhook implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public string $message;
 
     /**
@@ -21,7 +22,6 @@ class SendDiscordWebhook implements ShouldQueue
     {
         $this->message = $message;
     }
-
 
     /**
      * Execute the job.

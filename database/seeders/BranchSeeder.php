@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\References\Branch;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BranchSeeder extends Seeder
@@ -24,8 +23,8 @@ class BranchSeeder extends Seeder
 
         foreach ($branches as $branch) {
             Branch::firstOrCreate(
-                ['id' => $branch['id']], 
-                ['name' => $branch['name']] 
+                ['id' => $branch['id']],
+                ['name' => $branch['name']]
             );
         }
     }

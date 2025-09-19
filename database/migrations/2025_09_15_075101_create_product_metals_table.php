@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('product_metals', function (Blueprint $table) {
             $table->id();
-            $table->string('name',50);
+            $table->string('name', 50);
             $table->timestamps();
         });
-    }   
+    }
 
     /**
      * Reverse the migrations.

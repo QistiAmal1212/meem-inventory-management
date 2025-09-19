@@ -2,10 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use OwenIt\Auditing\Models\Audit;
-use App\Models\User;
 
 class AuditLog extends Component
 {

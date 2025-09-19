@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\BranchSelected;
 use App\Http\Controllers\ExportExcelController;
 use App\Http\Controllers\ExportPdfController;
 use App\Jobs\SendDiscordWebhook;
@@ -10,18 +9,15 @@ use App\Livewire\Product;
 use App\Livewire\Repository;
 use App\Livewire\Stock;
 use App\Models\User;
-use App\Notifications\TestNotification;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-
 Route::get('/send-test-notification', function () {
     Notification::make()
-    ->title('Berjaya')
-    ->body('Test berjaya. Ini ditunjukkan dalam UI Filament.')
-    ->sendToDatabase(auth()->user());
+        ->title('Berjaya')
+        ->body('Test berjaya. Ini ditunjukkan dalam UI Filament.')
+        ->sendToDatabase(auth()->user());
 
     return 'Notification sent!';
 });
@@ -49,7 +45,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/stock', Stock::class)->name('stock');
     Route::get('/repository', Repository::class)->name('repository');
     Route::get('/audit-log', AuditLog::class)->name('audit-log');
-
 
     Route::get('product/export/', [ExportExcelController::class, 'exportProduct'])->name('product.export');
     Route::get('product/export/pdf', [ExportPdfController::class, 'exportProduct'])->name('product.export.pdf');

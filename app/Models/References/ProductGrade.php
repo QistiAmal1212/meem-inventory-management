@@ -9,13 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductGrade extends Model
 {
     protected $fillable =
-    [
-     "grade"
-    ];
+        [
+            'grade',
+        ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
-
 }
