@@ -21,12 +21,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public bool $remember = false;
 
     /**
-     * Handle an incoming authentication request.
+     * Handle login request
      */
     public function login(): void
     {
         $this->validate();
-
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
@@ -44,7 +43,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 
     /**
-     * Ensure the authentication request is not rate limited.
+     * Ensure login is not rate limited
      */
     protected function ensureIsNotRateLimited(): void
     {
@@ -53,7 +52,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
         }
 
         event(new Lockout(request()));
-
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
@@ -65,71 +63,105 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 
     /**
-     * Get the authentication rate limiting throttle key.
+     * Throttle key
      */
     protected function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
-}; ?>
+};
+?>
 
-<style>
-      *{
-    color:black;
-  }
-    </style>
-
-<div class="flex flex-col gap-6 !text-black">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+{{-- col1 --}}
+<div class="w-[60%] relative left-[-15%] top-[-10%]">
+    <x-auth-header 
+        :title="__('Log in to your account')" 
+        :description="__('Enter your email and password below to log in')" 
+    />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="login" class="flex flex-col gap-6 light">
+    <form wire:submit="login" class="w-full flex flex-col gap-6">
         <!-- Email Address -->
-        <flux:input
-            wire:model="email"
-            :label="__('Email address')"
-            type="email"
-            required
-            autofocus
-            autocomplete="email"
-            placeholder="email@example.com"
-           class="border border-black"
-        />
+        <div class="w-full">
+            <img  src="{{ asset('images/meemgoldlogo.png') }}" alt="Meem Gold Logo" />
+            <label for="email" class="block text-sm font-medium text-gray-700">
+                {{ __('Email address') }}
+            </label>
+            <input
+                wire:model="email"
+                id="email"
+                type="email"
+                required
+                autofocus
+                autocomplete="email"
+                placeholder="email@example.com"
+                class="mt-1 block w-full rounded-lg border border-black px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+            />
+            @error('email') 
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p> 
+            @enderror
+        </div>
 
         <!-- Password -->
-        <div class="relative">
-            <flux:input
-             class="border border-black"
+        <div class="w-full">
+            <label for="password" class="block text-sm font-medium text-gray-700">
+                {{ __('Password') }}
+            </label>
+            <input
                 wire:model="password"
-                :label="__('Password')"
+                id="password"
                 type="password"
                 required
                 autocomplete="current-password"
-                :placeholder="__('Password')"
-                viewable
+                placeholder="{{ __('Password') }}"
+                class="mt-1 block w-full rounded-lg border border-black px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:outline-none"
             />
+            @error('password') 
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p> 
+            @enderror
 
             @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
+                <a href="{{ route('password.request') }}" class="block mt-2 text-sm text-blue-600 hover:underline">
                     {{ __('Forgot your password?') }}
-                </flux:link>
+                </a>
             @endif
         </div>
 
         <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+        <div class="flex items-center gap-2">
+            <input 
+                wire:model="remember"
+                id="remember"
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-400"
+            />
+            <label for="remember" class="text-sm text-gray-700">
+                {{ __('Remember me') }}
+            </label>
+        </div>
 
-        <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full !text-white">{{ __('Log in') }}</flux:button>
+        <!-- Submit -->
+        <div class="w-full">
+            <button 
+                type="submit" 
+                class="w-full rounded-lg bg-yellow-500 px-4 py-2 text-white font-medium hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            >
+                {{ __('Log in') }}
+            </button>
         </div>
     </form>
 
-    {{-- @if (Route::has('register'))
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 ">
+    {{-- Register link (optional) --}}
+    {{-- 
+    @if (Route::has('register'))
+        <div class="text-center text-sm text-zinc-600">
             <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+            <a href="{{ route('register') }}" class="text-yellow-600 hover:underline">
+                {{ __('Sign up') }}
+            </a>
         </div>
-    @endif --}}
+    @endif 
+    --}}
 </div>

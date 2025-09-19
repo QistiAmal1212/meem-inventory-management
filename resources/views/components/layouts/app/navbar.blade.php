@@ -7,13 +7,13 @@
         <div class="flex items-center space-x-4">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
                     {{-- Search --}}
-                    <div class="hidden lg:flex w-[495.74px] h-9 bg-violet-50 rounded-[10px] px-4 items-center">
+                    {{-- <div class="hidden lg:flex w-[495.74px] h-9 border-2 rounded-[10px] px-4 items-center">
                         <input
                             type="text"
                             placeholder="Carian"
-                            class="bg-transparent focus:outline-none text-gray-700 w-full placeholder-gray-400"
+                            class=" focus:outline-none text-gray-700 w-full placeholder-gray-400"
                         />
-                    </div>
+                    </div> --}}
                     
                     
         

@@ -1,8 +1,11 @@
 <?php
 
 use App\Events\BranchSelected;
+use App\Http\Controllers\ExportExcelController;
+use App\Http\Controllers\ExportPdfController;
 use App\Jobs\SendDiscordWebhook;
 use App\Livewire\AuditLog;
+use App\Livewire\CreateProduct;
 use App\Livewire\Product;
 use App\Livewire\Repository;
 use App\Livewire\Stock;
@@ -42,9 +45,14 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 
     Route::get('/product', Product::class)->name('product');
+    Route::get('/create-product', CreateProduct::class)->name('create.product');
     Route::get('/stock', Stock::class)->name('stock');
     Route::get('/repository', Repository::class)->name('repository');
     Route::get('/audit-log', AuditLog::class)->name('audit-log');
+
+
+    Route::get('product/export/', [ExportExcelController::class, 'exportProduct'])->name('product.export');
+    Route::get('product/export/pdf', [ExportPdfController::class, 'exportProduct'])->name('product.export.pdf');
 });
 
 require __DIR__.'/auth.php';

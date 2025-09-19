@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\References\Branch;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -20,46 +21,16 @@ class RoleSeeder extends Seeder
         $staff = Role::firstOrCreate(['name' => 'staff']);
         $staff->givePermissionTo(Permission::where('name', 'like', 'view %')->get());
 
-
-                // Branch Manager (Bangi)
-                $branchManagerBangi = Role::firstOrCreate(['name' => 'branch manager bangi']);
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'view products']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'view stocks']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'view repositories']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'manage users']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'manage products']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'manage stocks']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'manage repositories']));
-                $branchManagerBangi->givePermissionTo(Permission::firstOrCreate(['name' => 'handle branch bangi']));
-        
-                // Branch Manager (Shah Alam)
-                $branchManagerShahAlam = Role::firstOrCreate(['name' => 'branch manager shah alam']);
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view products']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view stocks']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view repositories']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage products']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage stocks']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage repositories']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'handle branch shah alam']));
-
-                // Branch Manager (Cheras)
-                $branchManagerShahAlam = Role::firstOrCreate(['name' => 'branch manager cheras']);
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view products']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view stocks']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view repositories']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage products']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage stocks']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage repositories']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'handle branch cheras']));
-
-                // Branch Manager (Cheras)
-                $branchManagerShahAlam = Role::firstOrCreate(['name' => 'branch manager penang']);
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view products']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view stocks']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'view repositories']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage products']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage stocks']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'manage repositories']));
-                $branchManagerShahAlam->givePermissionTo(Permission::firstOrCreate(['name' => 'handle branch penang']));
+        $manager = Role::firstOrCreate(['name' => 'manager']);
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'view products']));
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'view stocks']));
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'view repositories']));
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage users']));
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage products']));
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage stocks']));
+        $manager->givePermissionTo(Permission::firstOrCreate(['name' => 'manage repositories']));
+            
+        $sales = Role::firstOrCreate(['name' => 'sales']);
+        $sales->givePermissionTo(Permission::firstOrCreate(['name' => 'sales stock out']));
     }
 }

@@ -13,4 +13,5 @@
         
     </div>
     <x-layouts.app.navbar />
+  
 </div>

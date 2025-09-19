@@ -3,20 +3,30 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen !bg-white antialiased ">
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div class="flex w-full max-w-sm flex-col gap-2">
-                <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
-                    <span class="flex h-9 w-9 mb-1 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="size-9 fill-current text-black" />
-                    </span>
-                    <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
-                </a>
-                <div class="flex flex-col gap-6">
-                    {{ $slot }}
-                </div>
+    <body class="min-h-screen !bg-white antialiased">
+        <div class="relative flex min-h-screen">
+            {{-- Left column --}}
+            <div class="w-1/2 relative flex items-center justify-center">
+                <img src="{{ asset('images/logingold.svg') }}" 
+                     alt="gold" 
+                     class="w-[550px] h-[550px] absolute left-[15%] top-20">
+
+                     <img src="{{ asset('images/yellowsvg.svg') }}" 
+                     alt="gold" 
+                     class="w-full h-[90%] absolute top-0  left-[-15%] rotate-180">
+
+                     <img src="{{ asset('images/bluesvg.svg') }}" 
+                     alt="blue" 
+                     class="w-full h-[40%] absolute top-40  left-[0%] rotate-180">
+                
+            </div>
+
+            {{-- Right column (slot content) --}}
+            <div class="w-1/2 flex items-center justify-center p-2">
+                {{ $slot }}
             </div>
         </div>
+
         @fluxScripts
     </body>
 </html>

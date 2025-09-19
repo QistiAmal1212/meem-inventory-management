@@ -215,81 +215,11 @@
 </div>
 
 <!-- Recent Sales Today -->
-<div class="lg:col-span-3 bg-white rounded-xl shadow px-4 py-5 w-full overflow-x-auto">
+<div class="lg:col-span-3 bg-white rounded-xl shadow  py-5 w-full overflow-x-auto">
 
-    <h2 class="text-lg font-semibold text-neutral-900 font-['Poppins'] mb-4">Sales Report</h2>
+    <h2 class="text-lg font-semibold text-neutral-900 font-['Poppins'] mb-4 ml-3">Sales Report</h2>
 
-    <table class="min-w-full text-sm text-left text-gray-600 font-['Poppins']">
-        <thead class="text-xs uppercase bg-gray-50 text-gray-500">
-            <tr>
-                <th scope="col" class="px-4 py-2">Buyer Name</th>
-                <th scope="col" class="px-4 py-2">Product</th>
-                <th scope="col" class="px-4 py-2">Qty</th>
-                <th scope="col" class="px-4 py-2">Cashier</th>
-                <th scope="col" class="px-4 py-2">Date</th>
-                <th scope="col" class="px-4 py-2">Time</th>
-                <th scope="col" class="px-4 py-2">Remark</th>
-            </tr>
-        </thead>
-        
-        <tbody class="divide-y divide-gray-100">
-            <tr>
-                <td class="px-4 py-2">Ahmad Rahimi</td>
-                <td class="px-4 py-2">5 Dinar MEEM</td>
-                <td class="px-4 py-2">2</td>
-                <td class="px-4 py-2">Siti Aisyah</td>
-                <td class="px-4 py-2">2025-08-07</td>
-                <td class="px-4 py-2">14:32</td>
-                <td class="px-4 py-2">Paid by cash</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-2">Nur Fatin</td>
-                <td class="px-4 py-2">10g Jumbo</td>
-                <td class="px-4 py-2">1</td>
-                <td class="px-4 py-2">Muhammad Zain</td>
-                <td class="px-4 py-2">2025-08-07</td>
-                <td class="px-4 py-2">12:10</td>
-                <td class="px-4 py-2">Card payment</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-2">Nur Fatin</td>
-                <td class="px-4 py-2">10g Jumbo</td>
-                <td class="px-4 py-2">1</td>
-                <td class="px-4 py-2">Muhammad Zain</td>
-                <td class="px-4 py-2">2025-08-07</td>
-                <td class="px-4 py-2">12:10</td>
-                <td class="px-4 py-2">Card payment</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-2">Nur Fatin</td>
-                <td class="px-4 py-2">10g Jumbo</td>
-                <td class="px-4 py-2">1</td>
-                <td class="px-4 py-2">Muhammad Zain</td>
-                <td class="px-4 py-2">2025-08-07</td>
-                <td class="px-4 py-2">12:10</td>
-                <td class="px-4 py-2">Card payment</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-2">Nur Fatin</td>
-                <td class="px-4 py-2">10g Jumbo</td>
-                <td class="px-4 py-2">1</td>
-                <td class="px-4 py-2">Muhammad Zain</td>
-                <td class="px-4 py-2">2025-08-07</td>
-                <td class="px-4 py-2">12:10</td>
-                <td class="px-4 py-2">Card payment</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-2">Nur Fatin</td>
-                <td class="px-4 py-2">10g Jumbo</td>
-                <td class="px-4 py-2">1</td>
-                <td class="px-4 py-2">Muhammad Zain</td>
-                <td class="px-4 py-2">2025-08-07</td>
-                <td class="px-4 py-2">12:10</td>
-                <td class="px-4 py-2">Card payment</td>
-            </tr>
-        </tbody>
-        
-    </table>
+    <livewire:user-table/>
 </div>
 
 <br><br>
@@ -395,7 +325,9 @@
                     }
                 });
         
-                chart.render();
+                setTimeout(() => {
+        chart.render();
+    }, 300);
         
                 // Pagination
                 document.getElementById("nextBtn").addEventListener("click", function () {
@@ -429,6 +361,7 @@
                     });
                 }
             });
+            
         </script>
         
         

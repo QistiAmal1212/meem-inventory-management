@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\References\Branch;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -24,12 +24,18 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'manage repositories']);
 
         Permission::firstOrCreate(['name' => 'view audit logs']);
+        Permission::firstOrCreate(['name' => 'view stock in out']);
         Permission::firstOrCreate(['name' => 'manage permisions and roles']);
 
-        Permission::firstOrCreate(['name' => 'handle branch bangi']);
-        Permission::firstOrCreate(['name' => 'handle branch shah alam']);
-        Permission::firstOrCreate(['name' => 'handle branch cheras']);
-        Permission::firstOrCreate(['name' => 'handle branch penang']);
+        Permission::firstOrCreate(['name' => 'sales stock out']);
+
+       $branches = Branch::all();
+
+       foreach($branches as $branch)
+       {
+         Permission::firstOrCreate(['name' => $branch->name]);
+       }
+       Permission::firstOrCreate(['name' => 'all branch']);
 
         
 

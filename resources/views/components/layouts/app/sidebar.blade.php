@@ -9,7 +9,7 @@
         </style>
         @filamentStyles
     </head>
-    <body class="min-h-screen bg-white">
+    <body class="min-h-screen bg-white !light">
         <flux:sidebar sticky stashable class="fz-40 bg-white **:border-0
         {{--border-e border-zinc-200 --}}
         ">
@@ -251,6 +251,16 @@
 
         @filamentScripts
 
-        @fluxScripts
+        @fluxScripts  
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/dialog.js"></script>
+  
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                document.documentElement.classList.remove("dark")
+            })
+        </script>
+        
     </body>
 </html>
