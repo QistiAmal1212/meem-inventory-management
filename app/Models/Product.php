@@ -22,26 +22,22 @@ class Product extends Model
             'grade_id',
             'weight',
             'status',
-            'created_user_id'
+            'created_user_id',
         ];
-    
-    protected function weight(): Attribute
-   {
-      return Attribute::get(fn ($value) => 
-        rtrim(rtrim(number_format($value, 3, '.', ''), '0'), '.') . ' g'
-     );
-   }
-        
-   protected function numericWeight(): Attribute
-   {
-       return Attribute::get(fn () =>
-           rtrim(rtrim(number_format($this->attributes['weight'], 3, '.', ''), '0'), '.')
-       );
-   }
-   
-        
 
-    public function createdUser():BelongsTo
+    protected function weight(): Attribute
+    {
+        return Attribute::get(fn ($value) => rtrim(rtrim(number_format($value, 3, '.', ''), '0'), '.').' g'
+        );
+    }
+
+    protected function numericWeight(): Attribute
+    {
+        return Attribute::get(fn () => rtrim(rtrim(number_format($this->attributes['weight'], 3, '.', ''), '0'), '.')
+        );
+    }
+
+    public function createdUser(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -91,4 +87,26 @@ class Product extends Model
             return '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">Inactive</span>';
         });
     }
+
+    public function getThumbnailHtmlAttribute()
+    {
+        if ($this->images->isNotEmpty()) {
+            $url = asset('storage/' . $this->images->first()->path);
+
+            return <<<HTML
+                <img src="{$url}" 
+                    alt="{$this->name}" 
+                    class="w-6 h-6 rounded object-cover bg-gray-200"
+                    loading="lazy"
+                    decoding="async">
+                <span class="text-xs">{$this->name}</span>
+            HTML;
+        }
+
+        return <<<HTML
+            <div class="w-6 h-6 rounded bg-zinc-300"></div>
+            <span class="text-xs">{$this->name}</span>
+        HTML;
+    }
+
 }

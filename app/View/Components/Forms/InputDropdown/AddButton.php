@@ -8,17 +8,16 @@ use Illuminate\View\Component;
 
 class AddButton extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
+    public $onClick; // the full function call as a string
+
+    public $label;
+
+    public function __construct($onClick = "openModal('Default')", $label = 'Add New')
     {
-        //
+        $this->onClick = $onClick;
+        $this->label = $label;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.forms.input-dropdown.add-button');

@@ -17,7 +17,7 @@ class Stock extends Component
     // Reset pagination when search text changes
     public function updatingSearch()
     {
-      $this->resetPage();
+        $this->resetPage();
     }
 
     public function render()
@@ -30,7 +30,7 @@ class Stock extends Component
         //               $q->where('name', 'like', '%'.$this->search.'%');
         //           });
         // })
-        ->paginate(10);
+            ->paginate(10);
 
         return view('livewire.stock', [
             'stocks' => $stocks,

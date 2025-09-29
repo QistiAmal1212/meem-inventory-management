@@ -243,16 +243,15 @@ class ProductSeeder extends Seeder
                 ProductStock::firstOrCreate(
                     [
                         'product_id' => $stock['product_id'],
-                        'branch_id'  => $stock['branch_id'],
+                        'branch_id' => $stock['branch_id'],
                     ],
-                    [  
-                        'quantity'     => $stock['quantity'],
+                    [
+                        'quantity' => $stock['quantity'],
                         'min_quantity' => $stock['min_quantity'],
-                        'vault'        => $stock['vault'],
+                        'vault' => $stock['vault'],
                     ]
                 );
             }
-            
 
             // foreach ($productSales as $sale) {
             //     ProductGrade::firstOrCreate(

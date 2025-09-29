@@ -8,17 +8,25 @@ use Illuminate\View\Component;
 
 class InputNumber extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
+    public $label;
+
+    public $name;
+
+    public $maxlength;
+
+    public $placeholder;
+
+    public $required;
+
+    public function __construct($label, $name, $maxlength = 30, $placeholder = '', $required = false)
     {
-        //
+        $this->label = $label;
+        $this->name = $name;
+        $this->maxlength = $maxlength;
+        $this->placeholder = $placeholder;
+        $this->required = $required;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.forms.input-number');

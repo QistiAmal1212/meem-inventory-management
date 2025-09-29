@@ -1,3 +1,5 @@
-<div>
-    <!-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie -->
-</div>
+<button type="button"
+onClick="back()"
+class="w-24 h-9 bg-gray-500 rounded-md text-white text-sm font-normal font-['Inter'] leading-snug hover:bg-gray-600 transition">
+Cancel
+</button>

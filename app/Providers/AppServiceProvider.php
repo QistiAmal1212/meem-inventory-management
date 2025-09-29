@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             $message .= '**File:** '.$e->getFile().':'.$e->getLine();
 
             SendDiscordWebhook::dispatch($message);
-            
+
             Paginator::defaultView('view-name');
         });
 

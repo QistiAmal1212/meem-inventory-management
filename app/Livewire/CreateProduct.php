@@ -51,7 +51,10 @@ class CreateProduct extends Component
     public $selectedMetal = null;
 
     public $selectedGrade = null;
+
+    // validation error messages
     public $modalMessage = [];
+
     public $showModal = false;
 
     public function mount()
@@ -71,23 +74,18 @@ class CreateProduct extends Component
         } elseif ($type === 'Grade') {
             $this->grades[] = $value;
         }
-
-        $this->dispatch('reinit-select2');
     }
 
     public function submit()
     {
-        
+
         try {
 
-           
             $this->validate([
                 'name' => 'required|string|max:255|unique:products,name',
                 'reference' => 'required|string|max:255|unique:products,sku',
             ]);
-            
 
-           
             // Save to DB
             $product = Product::create([
                 'name' => $this->name,
@@ -101,45 +99,35 @@ class CreateProduct extends Component
             ]);
 
             foreach ($this->images as $image) {
-                if (!empty($image['url']) && str_contains($image['url'], ',')) {
+                if (! empty($image['url']) && str_contains($image['url'], ',')) {
                     [$meta, $content] = explode(',', $image['url'], 2);
-            
+
                     // extract mime type → extension
                     preg_match('/data:image\/(\w+);base64/', $meta, $matches);
-                    $ext = $matches[1] ?? 'png'; 
-            
-                    $filename = uniqid('', true) . '.' . $ext;
+                    $ext = $matches[1] ?? 'png';
+
+                    $filename = uniqid('', true).'.'.$ext;
                     $path = "products/$filename";
-            
+
                     Storage::disk('public')->put($path, base64_decode($content));
-            
+
                     $product->images()->create(['path' => $path]);
                 }
             }
-            
 
-            session()->flash('toast', [
-                'type' => 'success',
-                'message' => 'Product added successfully!',
-                'description' => 'The product has been permanently saved to the database.'
-            ]);
-            // Reset form
-            // $this->reset(['name', 'reference', 'category_id', 'metal_id', 'grade_id', 'weight', 'description', 'images']);
+            session()->flash('toast', ['type' => 'success', 'message' => 'Product added successfully!', 'description' => 'The product has been permanently saved to the database.']);
+
             return redirect()->route('product', $product->id);
 
-        
-        } catch (ValidationException $e) { 
-            // Tangkap error validasi → dispatch ke frontend
-            $this->modalMessage = $e->errors(); // simpan terus ke property
-            $this->showModal = true; 
-        
+        } catch (ValidationException $e) {
+            $this->modalMessage = $e->errors();
+            $this->showModal = true;
+
         } catch (\Exception $e) {
-            // Error lain
-           
             Log::error($e->getMessage());
         }
     }
-    
+
     public function render()
     {
         return view('livewire.create-product');

@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light"> 
+     <x-ts-banner wire class="z-600"/> 
     <head>
         @include('partials.head')
         <style>
@@ -16,7 +17,8 @@
     <x-layouts.app.sidebar />
     
      <x-toast-qisti />
-    
+
+   
     <!-- Main content (scrollable) -->
     <div class="pt-16 px-2 lg:px-2 overflow-y-auto flex-1 bg-neutral-50 h-[100vh]" data-flux-main>
         <br>
@@ -28,7 +30,7 @@
 </div>
  
         @livewire('notifications')
-
+        <tallstackui:script /> 
         @filamentScripts
 
         @fluxScripts  
