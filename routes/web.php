@@ -5,9 +5,11 @@ use App\Http\Controllers\ExportPdfController;
 use App\Jobs\SendDiscordWebhook;
 use App\Livewire\AuditLog;
 use App\Livewire\CreateProduct;
+use App\Livewire\EditProduct;
 use App\Livewire\Product;
 use App\Livewire\Repository;
 use App\Livewire\Stock;
+use App\Livewire\ViewProduct;
 use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/product', Product::class)->name('product');
     Route::get('/create-product', CreateProduct::class)->name('create.product');
+    Route::get('/edit-product/{id}', EditProduct::class)->name('edit.product');
+    Route::get('/view-product/{id}', ViewProduct::class)->name('view.product');
     Route::get('/stock', Stock::class)->name('stock');
     Route::get('/repository', Repository::class)->name('repository');
     Route::get('/audit-log', AuditLog::class)->name('audit-log');

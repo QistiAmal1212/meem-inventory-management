@@ -228,58 +228,25 @@
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
      
 
-
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
+            function initSalesChart() {
                 const categories = [
-                    '5 Dinar MEEM',  '0.5g Raya Batik', '1/2 Dinar MEEM',
+                    '5 Dinar MEEM', '0.5g Raya Batik', '1/2 Dinar MEEM',
                     '1g Eid Edition', '0.25g Mini Gold', '5g Umrah Special',
-                    '3g New Year', '1 Dinar Pearl',  '20g Premium','10g Jumbo','10 Dinar MEEM', '2 Dinar Classic'
+                    '3g New Year', '1 Dinar Pearl', '20g Premium','10g Jumbo','10 Dinar MEEM', '2 Dinar Classic'
                 ];
-        
+            
                 const seriesData = [32, 48, 15, 27, 22, 19, 12, 30, 45, 33, 21, 29];
-        
-                // Set which categories are silver
-                const silverItems = [
-                    '10 Dinar MEEM',
-                    '2 Dinar Classic',
-                    '10g Jumbo'
-                ];
-        
+            
+                const silverItems = ['10 Dinar MEEM', '2 Dinar Classic', '10g Jumbo'];
+            
                 let startIndex = 0;
                 const visibleCount = 6;
-        
+            
                 const chart = new ApexCharts(document.querySelector("#salesChart"), {
-                    chart: {
-                        type: 'bar',
-                        height: 300,
-                        toolbar: {
-                            show: true,
-                            tools: {
-                                download: true,
-                                selection: false,
-                                zoom: false,
-                                zoomin: false,
-                                zoomout: false,
-                                pan: false,
-                                reset: false,
-                            }
-                        },
-                        offsetX: 0,
-                    },
-                    grid: {
-                        padding: {
-                            left: 0,
-                            right: -10,
-                            bottom: -10
-                        }
-                    },
+                    chart: { type: 'bar', height: 300 },
                     plotOptions: {
-                        bar: {
-                            columnWidth: '30px',
-                            endingShape: 'flat',
-                            distributed: true
-                        }
+                        bar: { columnWidth: '30px', distributed: true }
                     },
                     series: [{
                         name: 'Units Sold',
@@ -287,48 +254,21 @@
                     }],
                     xaxis: {
                         categories: categories.slice(startIndex, startIndex + visibleCount),
-                        labels: {
-                            rotate: -45,
-                            trim: true,
-                            maxHeight: 80,
-                        },
-                        axisBorder: {
-                            show: false
-                        },
-                        axisTicks: {
-                            show: false
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                fontSize: '12px'
-                            }
-                        }
+                        labels: { rotate: -45 }
                     },
                     colors: categories.slice(startIndex, startIndex + visibleCount).map(label =>
                         silverItems.includes(label) ? '#C0C0C0' : '#FBAE2C'
                     ),
-                    dataLabels: { enabled: false },
-                    stroke: {
-                        show: true,
-                        width: 2,
-                        colors: ['transparent']
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: (val) => val + " unit"
-                        }
-                    },
-                    legend: {
-                        show: false
-                    }
+                    dataLabels: { enabled: false }
                 });
-        
+            
+                chart.render();
+            
+                // ✅ Fix hidden width issue on first load
                 setTimeout(() => {
-        chart.render();
-    }, 300);
-        
+                    window.dispatchEvent(new Event("resize"));
+                }, 200);
+            
                 // Pagination
                 document.getElementById("nextBtn").addEventListener("click", function () {
                     if (startIndex + visibleCount < categories.length) {
@@ -336,33 +276,37 @@
                         updateChart();
                     }
                 });
-        
+            
                 document.getElementById("prevBtn").addEventListener("click", function () {
                     if (startIndex > 0) {
                         startIndex--;
                         updateChart();
                     }
                 });
-        
+            
                 function updateChart() {
                     const currentCategories = categories.slice(startIndex, startIndex + visibleCount);
                     const currentData = seriesData.slice(startIndex, startIndex + visibleCount);
-        
+            
                     chart.updateOptions({
-                        xaxis: {
-                            categories: currentCategories
-                        },
+                        xaxis: { categories: currentCategories },
                         colors: currentCategories.map(label =>
                             silverItems.includes(label) ? '#C0C0C0' : '#FBAE2C'
                         ),
-                        series: [{
-                            data: currentData
-                        }]
+                        series: [{ data: currentData }]
                     });
                 }
-            });
+            }
             
-        </script>
+            // ✅ Run only when page is fully loaded
+            window.addEventListener("load", initSalesChart);
+            
+            // ✅ If using Livewire/Filament, also re-init after Livewire renders
+            document.addEventListener("livewire:navigated", () => {
+            setTimeout(initSalesChart, 200);
+       });
+            </script>
+            
         
         
         

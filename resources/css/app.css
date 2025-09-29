@@ -1,15 +1,19 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
-@import '../../vendor/power-components/livewire-powergrid/resources/css/tailwind4.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
+@custom-variant dark (&:not(*));
+
 /*----------------------------- powergrid code ---------------------------*/
 :root {
   color-scheme: light !important;
+}
+:root {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 /* Custom theme */
@@ -44,24 +48,6 @@ select.custom-select {
 }
 
 
-#power-grid-table-base input[type="text"] {
-  background-color: #ffffff !important;   /* bg-white */
-  color: #000000 !important;             /* text-black */
-  border: 1px solid #F3F4F6 !important;  /* gray-300 */
-  box-shadow: none !important;           /* kill ring shadows */
-  outline: none !important;
-}
-
-
-
-
-/* ---------------------------------------------------------------- */
-/* @custom-variant dark (&:where(.dark, .dark *)); */
-  
-/* .dark &,
-.dark {
-  all: unset;
-} */
 :root {
     /* Disable all Flux dark-mode color variables */
     --color-accent: unset !important;
@@ -74,13 +60,13 @@ select.custom-select {
     input,
     textarea,
     select {
-      color: black !important;            /* text inside input */
-      background-color: white !important; /* background */
+      color: black ;            
+      background-color: white ; 
     }
   
     input::placeholder,
     textarea::placeholder {
-      color: #9ca3af !important; /* Tailwind gray-400 */
+      color: #9ca3af !important; 
       opacity: 1 !important;
     }
   
@@ -105,15 +91,6 @@ select.custom-select {
 
    
 }
-
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
-}
-
 @layer base {
 
     *,
@@ -125,58 +102,21 @@ select.custom-select {
     }
 }
 
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
-}
-
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
-}
-
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
-
-
+/* filament overwrtite component styling */
 .fi-modal-window
 {
     @apply !h-[100vh] !ring-0 z-1000 pt-10 relative;
 
 }
 
-.select2-container
-{
-  width: 80% !important;
+[aria-current="page"] span{
+  background-color: #F59E0B !important;
+  color: #fff;
+  border-color: #F59E0B;
 }
 
-.select2-container--default .select2-selection--single {
-  /* background-color: #fff; */
-  border: 1px solid rgb(224, 213, 213) !important;
-  height: 35px;
-  /* border-radius: 4px; */
+input[readonly] {
+  background-color: #faf9f9 !important;
 }
-
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-  line-height: 35px !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-  height: 35px !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-  height: 35px;
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  width: 20px;
-}
-
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-  background-color: #ea9600 !important;
-}
-
 
 

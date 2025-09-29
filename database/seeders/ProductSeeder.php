@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\References\Branch;
 use App\Models\References\ProductCategory;
 use App\Models\References\ProductGrade;
@@ -71,6 +72,7 @@ class ProductSeeder extends Seeder
                 'grade_id' => 1,
                 'weight' => 0.5,
                 'status' => 1,
+                'created_user_id' => 1,
             ],
             [
                 'id' => 2,
@@ -82,6 +84,7 @@ class ProductSeeder extends Seeder
                 'grade_id' => 1,
                 'weight' => 10,
                 'status' => 1,
+                'created_user_id' => 1,
             ],
             [
                 'id' => 3,
@@ -93,6 +96,7 @@ class ProductSeeder extends Seeder
                 'grade_id' => 1,
                 'weight' => 4.25,
                 'status' => 1,
+                'created_user_id' => 1,
             ],
             [
                 'id' => 4,
@@ -104,6 +108,7 @@ class ProductSeeder extends Seeder
                 'grade_id' => 2,
                 'weight' => 2.975,
                 'status' => 1,
+                'created_user_id' => 1,
             ],
             [
                 'id' => 5,
@@ -115,6 +120,7 @@ class ProductSeeder extends Seeder
                 'grade_id' => 1,
                 'weight' => 1,
                 'status' => 1,
+                'created_user_id' => 1,
             ],
         ];
 
@@ -130,6 +136,7 @@ class ProductSeeder extends Seeder
                     'grade_id' => $product['grade_id'],
                     'weight' => $product['weight'],
                     'status' => $product['status'],
+                    'created_user_id' => $product['created_user_id'],
                 ]
             );
         }
@@ -233,15 +240,19 @@ class ProductSeeder extends Seeder
             // ];
 
             foreach ($productStocks as $stock) {
-                ProductGrade::firstOrCreate(
-                    ['id' => $stock['id']],
-                    ['product_id' => $stock['product_id']],
-                    ['branch_id' => $stock['branch_id']],
-                    ['quantity' => $stock['quantity']],
-                    ['min_quantity' => $stock['min_quantity']],
-                    ['vault' => $stock['vault']],
+                ProductStock::firstOrCreate(
+                    [
+                        'product_id' => $stock['product_id'],
+                        'branch_id'  => $stock['branch_id'],
+                    ],
+                    [  
+                        'quantity'     => $stock['quantity'],
+                        'min_quantity' => $stock['min_quantity'],
+                        'vault'        => $stock['vault'],
+                    ]
                 );
             }
+            
 
             // foreach ($productSales as $sale) {
             //     ProductGrade::firstOrCreate(

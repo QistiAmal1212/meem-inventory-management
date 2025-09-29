@@ -2,9 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\Product;
 use App\Models\References\ProductCategory;
 use App\Models\References\ProductGrade;
 use App\Models\References\ProductMetal;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -18,13 +22,13 @@ class CreateProduct extends Component
 
     public $metals = [];
 
-    public $greds = [];
+    public $grades = [];
 
-    public $category;
+    public $category_id;
 
-    public $metal;
+    public $metal_id;
 
-    public $gred;
+    public $grade_id;
 
     public $name;
 
@@ -42,11 +46,19 @@ class CreateProduct extends Component
 
     public $newValue;
 
+    public $selectedCategory = null;
+
+    public $selectedMetal = null;
+
+    public $selectedGrade = null;
+    public $modalMessage = [];
+    public $showModal = false;
+
     public function mount()
     {
         $this->categories = ProductCategory::pluck('name', 'id')->take('8')->toArray();
         $this->metals = ProductMetal::pluck('name', 'id')->toArray();
-        $this->greds = ProductGrade::pluck('grade', 'id')->toArray();
+        $this->grades = ProductGrade::pluck('grade', 'id')->toArray();
     }
 
     public function addOption($type, $value)
@@ -56,8 +68,8 @@ class CreateProduct extends Component
         } elseif ($type === 'Metal') {
 
             $this->metals[] = $value;
-        } elseif ($type === 'Gred') {
-            $this->greds[] = $value;
+        } elseif ($type === 'Grade') {
+            $this->grades[] = $value;
         }
 
         $this->dispatch('reinit-select2');
@@ -65,37 +77,69 @@ class CreateProduct extends Component
 
     public function submit()
     {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:255',
-            'category_id' => 'required|string',
-            'metal_id' => 'required|string',
-            'gred_id' => 'required|string',
-            'weight' => 'required|string',
-            'description' => 'required|string|max:300',
-        ]);
+        
+        try {
 
-        // Store images
-        $imagePaths = [];
-        foreach ($this->images as $image) {
-            $imagePaths[] = $image->store('products', 'public');
+           
+            $this->validate([
+                'name' => 'required|string|max:255|unique:products,name',
+                'reference' => 'required|string|max:255|unique:products,sku',
+            ]);
+            
+
+           
+            // Save to DB
+            $product = Product::create([
+                'name' => $this->name,
+                'sku' => $this->reference,
+                'category_id' => $this->selectedCategory,
+                'metal_id' => $this->selectedMetal,
+                'grade_id' => $this->selectedGrade,
+                'weight' => $this->weight,
+                'description' => $this->description,
+                'created_user_id' => auth()->id(),
+            ]);
+
+            foreach ($this->images as $image) {
+                if (!empty($image['url']) && str_contains($image['url'], ',')) {
+                    [$meta, $content] = explode(',', $image['url'], 2);
+            
+                    // extract mime type → extension
+                    preg_match('/data:image\/(\w+);base64/', $meta, $matches);
+                    $ext = $matches[1] ?? 'png'; 
+            
+                    $filename = uniqid('', true) . '.' . $ext;
+                    $path = "products/$filename";
+            
+                    Storage::disk('public')->put($path, base64_decode($content));
+            
+                    $product->images()->create(['path' => $path]);
+                }
+            }
+            
+
+            session()->flash('toast', [
+                'type' => 'success',
+                'message' => 'Product added successfully!',
+                'description' => 'The product has been permanently saved to the database.'
+            ]);
+            // Reset form
+            // $this->reset(['name', 'reference', 'category_id', 'metal_id', 'grade_id', 'weight', 'description', 'images']);
+            return redirect()->route('product', $product->id);
+
+        
+        } catch (ValidationException $e) { 
+            // Tangkap error validasi → dispatch ke frontend
+            $this->modalMessage = $e->errors(); // simpan terus ke property
+            $this->showModal = true; 
+        
+        } catch (\Exception $e) {
+            // Error lain
+           
+            Log::error($e->getMessage());
         }
-
-        // Save to DB (example)
-        Product::create([
-            'name' => $this->name,
-            'sku' => $this->sku,
-            'category_id' => $this->category_id,
-            'metal_id' => $this->metal_id,
-            'gred_id' => $this->gred_id,
-            'weight' => $this->weight,
-            'description' => $this->description,
-        ]);
-
-        $this->reset(['name', 'reference', 'category', 'metal', 'gred', 'weight', 'description', 'images']);
-        $this->dispatchBrowserEvent('notify', ['message' => 'Product added successfully!']);
     }
-
+    
     public function render()
     {
         return view('livewire.create-product');

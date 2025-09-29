@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\References\ProductCategory;
 use App\Models\References\ProductGrade;
 use App\Models\References\ProductMetal;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,7 +22,29 @@ class Product extends Model
             'grade_id',
             'weight',
             'status',
+            'created_user_id'
         ];
+    
+    protected function weight(): Attribute
+   {
+      return Attribute::get(fn ($value) => 
+        rtrim(rtrim(number_format($value, 3, '.', ''), '0'), '.') . ' g'
+     );
+   }
+        
+   protected function numericWeight(): Attribute
+   {
+       return Attribute::get(fn () =>
+           rtrim(rtrim(number_format($this->attributes['weight'], 3, '.', ''), '0'), '.')
+       );
+   }
+   
+        
+
+    public function createdUser():BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function category(): BelongsTo
     {
@@ -38,7 +61,7 @@ class Product extends Model
         return $this->belongsTo(ProductGrade::class);
     }
 
-    public function image(): HasMany
+    public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
@@ -56,5 +79,16 @@ class Product extends Model
     public function productSale(): HasMany
     {
         return $this->hasMany(productSale::class);
+    }
+
+    protected function statusBadge(): Attribute
+    {
+        return Attribute::get(function () {
+            if ($this->status == 1) {
+                return '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Active</span>';
+            }
+
+            return '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">Inactive</span>';
+        });
     }
 }

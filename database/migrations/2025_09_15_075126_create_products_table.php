@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('weight', 10, 4);
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->unsignedTinyInteger('created_user_id');
         });
     }
 

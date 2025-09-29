@@ -1,266 +1,152 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
-    <head>
-        @include('partials.head')
-        <style>
-            [x-cloak] {
-                display: none !important;
-            }
-        </style>
-        @filamentStyles
-    </head>
-    <body class="min-h-screen bg-white !light">
-        <flux:sidebar sticky stashable class="fz-40 bg-white **:border-0
-        {{--border-e border-zinc-200 --}}
-        ">
-            <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+<!-- Sidebar -->
+<div 
+    class="h-screen flex flex-col border-r border-gray-100 transition-all duration-300 z-50 w-60"
+    :class="open ? '!w-60' : '!w-20'"
+>
+    <!-- Logo + Collapse Button -->
+    <div @click="open = !open" class="flex items-center justify-between py-6 px-4 ml-4">
+        <img   src="{{ asset('images/meemgoldlogo.png') }}" alt="MeemGold"  
+        class="h-10"
+        :class="open ? '!h-10' : '!h-4'">
+        {{-- <button 
+        x-show="!open" x-transition
+        @click="open = !open" 
+        class="p-2 rounded hover:bg-gray-100 transition"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 transition-transform duration-300"
+             :class="open ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+    </button> --}}
 
-            <a href="{{ route('dashboard') }}" class="me-5 flex justify-center items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-                <img  src="{{ asset('images/meemgoldlogo.png') }}" alt="Meem Gold Logo" />
-
-            </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="flex-1  space-y-1 ml-2">
         
-            <flux:navlist variant="outline" class="mt-4">
-                {{-- <flux:navlist.group :heading="__('Platform')" class="grid"> --}}
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group mt-2">
-                        <div class="relative w-16 h-10 rounded-tr-[5px] rounded-br-[5px] flex items-center justify-center">
-                            @if (request()->routeIs('dashboard'))
-                            <!-- Background layer with opacity (only if active) -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
-                        @endif
-                            <!-- Smaller SVG icon -->
-                            <svg class="relative z-10 w-6 h-6" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11.267 17.1753C13.2006 17.1755 14.7503 18.617 14.7504 20.4106V24.7173C14.7504 26.4984 13.2006 27.9514 11.267 27.9517H6.63025C4.71023 27.9515 3.14685 26.4984 3.14685 24.7173V20.4106C3.14694 18.617 4.71029 17.1755 6.63025 17.1753H11.267ZM27.0941 17.1753C29.0142 17.1753 30.5784 18.6169 30.5785 20.4106V24.7173C30.5785 26.4985 29.0143 27.9517 27.0941 27.9517H22.4584C20.5246 27.9516 18.975 26.4985 18.975 24.7173V20.4106C18.9751 18.6169 20.5246 17.1754 22.4584 17.1753H27.0941ZM11.267 2.68604C13.2006 2.68628 14.7504 4.13904 14.7504 5.92139V10.228C14.7503 12.0217 13.2006 13.4612 11.267 13.4614H6.63025C4.7103 13.4612 3.14696 12.0217 3.14685 10.228V5.92139C3.14685 4.139 4.71023 2.68622 6.63025 2.68604H11.267ZM27.0941 2.68604C29.0143 2.68604 30.5785 4.13889 30.5785 5.92139V10.228C30.5784 12.0218 29.0142 13.4614 27.0941 13.4614H22.4584C20.5246 13.4613 18.9751 12.0218 18.975 10.228V5.92139C18.975 4.13895 20.5246 2.68612 22.4584 2.68604H27.0941Z" 
-                                fill="{{ request()->routeIs('dashboard') ? '#FBAE2C' : '#9CA3AF' }}"/>
-                            </svg>
-                        </div>
-                        <span class="{{ request()->routeIs('dashboard') ? 'text-amber-400 font-semibold ' : 'text-slate-500' }} text-base font-['Nunito']">
-                            Dashboard
-                        </span>
-                        
-                    </a>
-                    <a href="{{ route('product') }}" class="flex items-center gap-3 group mt-2">
-                        <div class="relative w-16 h-10 rounded-tr-[5px] rounded-br-[5px] flex items-center justify-center">
-                            @if (request()->routeIs('product'))
-                                <!-- Background layer with opacity (only if active) -->
-                                <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
-                            @endif
-                    
-                            <!-- SVG icon -->
-                            <svg 
-                                class="relative z-10 w-6 h-6" 
-                                viewBox="0 0 34 31" 
-                                fill="none" 
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <g>
-                                    <path d="M10.4579 2.9043H23.2669C27.9315 2.9043 30.5649 5.34117 30.5787 9.6376V21.4367C30.5787 25.7318 27.9315 28.17 23.2669 28.17H10.4579C5.7932 28.17 3.14746 25.7318 3.14746 21.4367V9.6376C3.14746 5.34117 5.7932 2.9043 10.4579 2.9043ZM16.9303 22.94C17.5214 22.94 18.0138 22.5357 18.0687 21.9925V9.11966C18.1235 8.72804 17.9192 8.33516 17.5488 8.12166C17.1634 7.9069 16.6971 7.9069 16.3281 8.12166C15.9565 8.33516 15.7521 8.72804 15.7919 9.11966V21.9925C15.8618 22.5357 16.3542 22.94 16.9303 22.94ZM23.2408 22.94C23.8169 22.94 24.3093 22.5357 24.3792 21.9925V17.849C24.419 17.4434 24.2146 17.0657 23.8429 16.851C23.474 16.6362 23.0076 16.6362 22.6236 16.851C22.2519 17.0657 22.0476 17.4434 22.1024 17.849V21.9925C22.1573 22.5357 22.6497 22.94 23.2408 22.94ZM11.6772 21.9925C11.6223 22.5357 11.1299 22.94 10.5388 22.94C9.94902 22.94 9.45526 22.5357 9.40177 21.9925V13.2632C9.36063 12.8703 9.56499 12.48 9.93668 12.2652C10.3056 12.0505 10.7733 12.0505 11.1437 12.2652C11.5126 12.48 11.7197 12.8703 11.6772 13.2632V21.9925Z"
-                                    fill="{{ request()->routeIs('product') ? '#FBAE2C' : '#9CA3AF' }}" />
-                                </g>
-                            </svg>
-                        </div>
-                        <span class="{{ request()->routeIs('product') ? 'text-amber-400 font-semibold' : 'text-slate-500' }} text-base font-['Nunito']">
-                            Product
-                        </span>
-                    </a>
-                    
-                    
-                    <a href="{{ route('stock') }}" class="flex items-center gap-3 group mt-2">
-                        <div class="relative w-16 h-10 rounded-tr-[5px] rounded-br-[5px] flex items-center justify-center">
-                            @if (request()->routeIs('stock'))
-                                <!-- Background layer if active -->
-                                <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
-                            @endif
-                    
-                            <!-- SVG icon -->
-                            <svg class="relative z-10 w-6 h-6" width="34" height="31" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M30.2863 13.908C30.1006 14.0742 29.8486 14.1691 29.5833 14.1691C28.6017 14.1691 27.8059 14.8813 27.8059 15.7477C27.8059 16.62 28.5925 17.3286 29.5647 17.3381C30.1126 17.3428 30.5782 17.6847 30.5782 18.1748V21.2192C30.5782 23.7817 28.2569 25.8599 25.3917 25.8599H21.0674C20.6204 25.8599 20.2583 25.5359 20.2583 25.1359V22.5722C20.2583 22.0737 19.8206 21.6821 19.2635 21.6821C18.7196 21.6821 18.2686 22.0737 18.2686 22.5722V25.1359C18.2686 25.5359 17.9065 25.8599 17.4608 25.8599H8.33343C5.48154 25.8599 3.14697 23.7829 3.14697 21.2192V18.1748C3.14697 17.6847 3.61256 17.3428 4.16039 17.3381C5.13401 17.3286 5.91927 16.62 5.91927 15.7477C5.91927 14.905 5.14993 14.2641 4.14182 14.2641C3.87653 14.2641 3.6245 14.1691 3.43879 14.003C3.25309 13.8368 3.14697 13.6113 3.14697 13.3739V10.2999C3.14697 7.74099 5.48685 5.64734 8.3467 5.64734H17.4608C17.9065 5.64734 18.2686 5.97136 18.2686 6.37134V9.40975C18.2686 9.89637 18.7196 10.2999 19.2635 10.2999C19.8206 10.2999 20.2583 9.89637 20.2583 9.40975V6.37134C20.2583 5.97136 20.6204 5.64734 21.0674 5.64734H25.3917C28.2569 5.64734 30.5782 7.72438 30.5782 10.288V13.279C30.5782 13.5163 30.472 13.7419 30.2863 13.908ZM19.2635 19.3795C19.8206 19.3795 20.2583 18.976 20.2583 18.4894V13.7419C20.2583 13.2552 19.8206 12.8517 19.2635 12.8517C18.7196 12.8517 18.2686 13.2552 18.2686 13.7419V18.4894C18.2686 18.976 18.7196 19.3795 19.2635 19.3795Z"
-                                    fill="{{ request()->routeIs('stock') ? '#FBAE2C' : '#9CA3AF' }}" />
-                            </svg>
-                        </div>
-                        <span class="{{ request()->routeIs('stock') ? 'text-amber-400 font-semibold' : 'text-slate-500' }} text-base font-['Nunito']">
-                            Stock
-                        </span>
-                    </a>
-                    
-                    <a href="{{ route('repository') }}" class="flex items-center gap-3 group mt-2">
-                        <div class="relative w-16 h-10 rounded-tr-[5px] rounded-br-[5px] flex items-center justify-center">
-                            @if (request()->routeIs('repository'))
-                                <!-- Active background highlight -->
-                                <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
-                            @endif
-                    
-                            <!-- SVG icon -->
-                            <svg class="relative z-10 w-6 h-6" width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M22.5084 3.49765L22.5098 4.44464C26.288 4.71738 28.7837 7.08864 28.7878 10.7251L28.8027 21.3692C28.8081 25.334 26.1038 27.7734 21.7691 27.7797L11.1807 27.7923C6.8731 27.7974 4.13495 25.2999 4.12953 21.3238L4.11463 10.8046C4.10922 7.14419 6.51695 4.77925 10.2951 4.4598L10.2938 3.51281C10.2924 2.95724 10.7393 2.5393 11.3351 2.5393C11.931 2.53804 12.3778 2.95471 12.3792 3.51028L12.3805 4.39414L20.4244 4.38404L20.423 3.50018C20.4217 2.94461 20.8685 2.52794 21.4644 2.52668C22.0467 2.52541 22.5071 2.94209 22.5084 3.49765ZM6.20143 11.1948L26.7037 11.1695V10.7276C26.6455 8.0129 25.1667 6.58863 22.5125 6.3765L22.5139 7.34874C22.5139 7.89168 22.0548 8.32225 21.4725 8.32225C20.8767 8.32351 20.4284 7.89421 20.4284 7.35127L20.4271 6.32852L12.3833 6.33862L12.3846 7.36011C12.3846 7.90431 11.9391 8.33361 11.3432 8.33361C10.7474 8.33488 10.2992 7.90684 10.2992 7.36263L10.2978 6.39039C7.65717 6.63408 6.19601 8.06341 6.20007 10.8021L6.20143 11.1948ZM20.9024 16.9335V16.9474C20.9159 17.5282 21.4305 17.9689 22.0548 17.9563C22.6642 17.9424 23.1503 17.4613 23.1368 16.8805C23.1084 16.3249 22.6195 15.8716 22.0115 15.8729C21.3885 15.8855 20.901 16.3527 20.9024 16.9335ZM22.0209 22.6028C21.398 22.5902 20.8956 22.1117 20.8943 21.5309C20.8807 20.95 21.3804 20.469 22.0033 20.4551H22.0169C22.6533 20.4551 23.1693 20.9336 23.1693 21.5271C23.1706 22.1205 22.6561 22.6016 22.0209 22.6028ZM15.3232 16.9537C15.3503 17.5346 15.8662 17.9879 16.4891 17.9626C17.0985 17.9361 17.5847 17.4563 17.5576 16.8755C17.5427 16.3073 17.0416 15.8653 16.4322 15.8666C15.8093 15.8918 15.3218 16.3729 15.3232 16.9537ZM16.4945 22.546C15.8716 22.5713 15.357 22.118 15.3286 21.5372C15.3286 20.9563 15.8147 20.4765 16.4377 20.45C17.047 20.4488 17.5494 20.8907 17.563 21.4576C17.5914 22.0397 17.1039 22.5195 16.4945 22.546ZM9.74396 16.9979C9.77104 17.5788 10.287 18.0333 10.9099 18.0068C11.5193 17.9815 12.0054 17.5005 11.977 16.9196C11.9635 16.3515 11.4624 15.9095 10.8517 15.9108C10.2288 15.936 9.7426 16.4171 9.74396 16.9979ZM10.9153 22.5523C10.2924 22.5789 9.77781 22.1243 9.74937 21.5435C9.74802 20.9627 10.2355 20.4816 10.8584 20.4563C11.4678 20.4551 11.9702 20.897 11.9838 21.4652C12.0122 22.046 11.5261 22.5271 10.9153 22.5523Z"
-                                    fill="{{ request()->routeIs('repository') ? '#FBAE2C' : '#9CA3AF' }}" />
-                            </svg>
-                        </div>
-                    
-                        <span class="{{ request()->routeIs('repository') ? 'text-amber-400 font-semibold' : 'text-slate-500' }} text-base font-['Nunito']">
-                            Repository
-                        </span>
-                    </a>
-                    
-                    <a href="{{ route('audit-log') }}" class="flex items-center gap-3 group mt-2">
-                        <div class="relative w-16 h-10 rounded-tr-[5px] rounded-br-[5px] flex items-center justify-center">
-                            @if (request()->routeIs('audit-log'))
-                                <!-- Active background layer -->
-                                <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
-                            @endif
-                    
-                            <!-- Icon -->
-                            <svg class="relative z-10 w-6 h-6" width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M21.1899 4.99298C21.1351 5.30872 21.1079 5.6245 21.1079 5.94025C21.1079 8.7826 23.604 11.0808 26.6763 11.0809C27.019 11.0809 27.3482 11.0445 27.6909 10.994V21.1873C27.6908 25.4709 24.9479 28.0096 20.2847 28.0096H10.1509C5.48631 28.0096 2.7428 25.4709 2.74268 21.1873V11.8397C2.74281 7.54469 5.48632 4.99298 10.1509 4.99298H21.1899ZM21.4663 12.6736C21.0947 12.6358 20.7252 12.7874 20.5044 13.0652L17.187 17.0193L13.3862 14.2654C13.1531 14.1012 12.8783 14.0368 12.604 14.0633C12.3311 14.1012 12.0844 14.2391 11.9185 14.4412L7.85986 19.3065L7.77588 19.4197C7.54292 19.8226 7.65273 20.3408 8.06396 20.6199C8.25587 20.7336 8.46183 20.8093 8.69482 20.8094C9.0116 20.822 9.31237 20.6692 9.50439 20.4305L12.9468 16.3484L16.856 19.0535L16.979 19.1277C17.4179 19.3425 17.9673 19.2424 18.2827 18.8621L22.2466 14.1522L22.1909 14.1766C22.4103 13.8987 22.4521 13.5451 22.3013 13.2293C22.1518 12.9137 21.8213 12.6991 21.4663 12.6736ZM26.8687 2.74396C28.6928 2.74401 30.1743 4.10874 30.1743 5.78888C30.1741 7.46883 28.6926 8.83277 26.8687 8.83282C25.0446 8.83282 23.5632 7.46886 23.563 5.78888C23.563 4.10871 25.0445 2.74396 26.8687 2.74396Z"
-                                    fill="{{ request()->routeIs('audit-log') ? '#FBAE2C' : '#9CA3AF' }}" />
-                            </svg>
-                        </div>
-                    
-                        <span class="{{ request()->routeIs('audit-log') ? 'text-amber-400 font-semibold' : 'text-slate-500' }} text-base font-['Nunito']">
-                            Audit Log
-                        </span>
-                    </a>
-                    
-                    <a href="{{ route('settings') }}" class="flex items-center gap-3 group mt-2">
-                        <div class="relative w-16 h-10 rounded-tr-[5px] rounded-br-[5px] flex items-center justify-center">
-                            @if (request()->routeIs('settings'))
-                                <!-- Active background -->
-                                <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
-                            @endif
-                    
-                            <!-- Icon -->
-                            <svg class="relative z-10 w-6 h-6" width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M17.4424 2.52667C18.4795 2.52672 19.4189 3.05701 19.9375 3.84015C20.1898 4.21913 20.3575 4.68731 20.3155 5.17999C20.2876 5.55879 20.4136 5.93777 20.6377 6.29132C21.3525 7.36497 22.9365 7.76943 24.17 7.16339C25.5576 6.43069 27.3104 6.8727 28.1094 8.12335L29.0479 9.61359C29.8609 10.8642 29.4124 12.4687 28.0108 13.1888C26.8194 13.8331 26.3995 15.2606 27.1143 16.347C27.3385 16.6879 27.5902 16.9787 27.9825 17.1556C28.473 17.3956 28.8519 17.7746 29.1182 18.1536C29.6368 18.9368 29.5945 19.8971 29.0899 20.7435L28.1094 22.2591C27.5908 23.0676 26.6231 23.5726 25.628 23.5726C25.1374 23.5726 24.5911 23.4463 24.1426 23.1937C23.7783 22.979 23.3576 22.9037 22.9092 22.9036C21.5216 22.9036 20.3576 23.9519 20.3155 25.2025C20.3155 26.6552 19.026 27.7923 17.4141 27.7923H15.5078C13.882 27.7922 12.5928 26.6552 12.5928 25.2025C12.5647 23.952 11.4012 22.9038 10.0137 22.9036C9.55134 22.9036 9.13063 22.9791 8.7803 23.1937C8.33177 23.4463 7.77054 23.5726 7.29397 23.5726C6.28483 23.5725 5.31745 23.0676 4.79886 22.2591L3.83206 20.7435C3.31348 19.9224 3.28525 18.9368 3.80374 18.1536C4.02794 17.7747 4.44843 17.3956 4.92483 17.1556C5.3173 16.9787 5.57034 16.6881 5.80862 16.347C6.50931 15.2606 6.08874 13.8331 4.89749 13.1888C3.50983 12.4687 3.06142 10.8642 3.86038 9.61359L4.79886 8.12335C5.61183 6.8727 7.35031 6.43069 8.75198 7.16339C9.9714 7.76958 11.5557 7.36504 12.2705 6.29132C12.4947 5.93778 12.6207 5.55877 12.5928 5.17999C12.5648 4.68731 12.7191 4.21913 12.9854 3.84015C13.504 3.05718 14.4428 2.55195 15.4658 2.52667H17.4424ZM16.4746 11.597C14.2742 11.5972 12.4942 13.189 12.4942 15.1722C12.4942 17.1554 14.2742 18.7345 16.4746 18.7347C18.6753 18.7347 20.4141 17.1555 20.4141 15.1722C20.4141 13.1888 18.6753 11.597 16.4746 11.597Z"
-                                    fill="{{ request()->routeIs('settings') ? '#FBAE2C' : '#9CA3AF' }}" />
-                            </svg>
-                        </div>
-                    
-                        <span class="{{ request()->routeIs('settings') ? 'text-amber-400 font-semibold' : 'text-slate-500' }} text-base font-['Nunito']">
-                            Settings
-                        </span>
-                    </a>
-                    
-                {{-- </flux:navlist.group> --}}
-            </flux:navlist>
-            
-            <flux:spacer />
+        <!-- Dashboard -->
+        @php $isActive = request()->routeIs('dashboard'); @endphp
+        <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 transition group relative">
+            @if ($isActive)
+                <div class="absolute left-0 inset-0 bg-gradient-to-r from-amber-200 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
+            @endif
+            <svg x-show="open" x-transitionwidth="25" height="25" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                fill="{{ request()->routeIs('dashboard') ? '#FBAE2C' : '#9CA3AF' }}"
+                 d="M11.2669 17.1753C13.2005 17.1755 14.7502 18.617 14.7503 20.4106V24.7173C14.7503 26.4984 13.2006 27.9514 11.2669 27.9517H6.63019C4.71017 27.9515 3.14679 26.4984 3.14679 24.7173V20.4106C3.14688 18.617 4.71023 17.1755 6.63019 17.1753H11.2669ZM27.0941 17.1753C29.0142 17.1753 30.5783 18.6169 30.5784 20.4106V24.7173C30.5784 26.4985 29.0142 27.9517 27.0941 27.9517H22.4583C20.5245 27.9516 18.9749 26.4985 18.9749 24.7173V20.4106C18.975 18.6169 20.5246 17.1754 22.4583 17.1753H27.0941ZM11.2669 2.68604C13.2006 2.68628 14.7503 4.13904 14.7503 5.92139V10.228C14.7502 12.0217 13.2005 13.4612 11.2669 13.4614H6.63019C4.71024 13.4612 3.1469 12.0217 3.14679 10.228V5.92139C3.14679 4.139 4.71017 2.68622 6.63019 2.68604H11.2669ZM27.0941 2.68604C29.0142 2.68604 30.5784 4.13889 30.5784 5.92139V10.228C30.5783 12.0218 29.0142 13.4614 27.0941 13.4614H22.4583C20.5246 13.4613 18.975 12.0218 18.9749 10.228V5.92139C18.9749 4.13895 20.5245 2.68612 22.4583 2.68604H27.0941Z" fill="#FBAE2C"/>
+                </svg>
+                
+            <span x-show="open" x-transition class="{{ $isActive ? 'text-amber-400 font-semibold' : 'text-slate-500' }} font-['Nunito'] ml-8">
+                Dashboard
+            </span>
+        </a>
 
-         
-            <!-- Desktop User Menu -->
-            {{-- <flux:dropdown class="hidden lg:block" position="bottom" align="start">
-                <flux:profile
-                    :name="auth()->user()->name"
-                    :initials="auth()->user()->initials()"
-                    icon:trailing="chevrons-up-down"
-                />
+        {{-- <div x-show="open" x-transition 
+        class="px-4 text-[12px] font-semibold text-gray-400  tracking-wider mt-5 mb-2">
+       Main Menu
+   </div> --}}
+        <!-- Product -->
+        @php $isActive = request()->routeIs('product'); @endphp
+        <a href="{{ route('product') }}" class="flex items-center px-4 py-3 transition group relative">
+            @if ($isActive)
+                <div class="absolute left-0 inset-0 bg-gradient-to-r from-amber-200 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
+            @endif
+            <svg width="25" height="25" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+           
+                
+                <path 
+                fill="{{ request()->routeIs('product') ? '#FBAE2C' : '#9CA3AF' }}"
+                fill-rule="evenodd" clip-rule="evenodd" d="M10.4579 2.9043H23.2669C27.9316 2.9043 30.565 5.34117 30.5787 9.6376V21.4367C30.5787 25.7318 27.9316 28.17 23.2669 28.17H10.4579C5.79321 28.17 3.14748 25.7318 3.14748 21.4367V9.6376C3.14748 5.34117 5.79321 2.9043 10.4579 2.9043ZM16.9303 22.94C17.5214 22.94 18.0138 22.5357 18.0687 21.9925V9.11966C18.1235 8.72804 17.9192 8.33516 17.5489 8.12166C17.1634 7.9069 16.6971 7.9069 16.3282 8.12166C15.9565 8.33516 15.7521 8.72804 15.7919 9.11966V21.9925C15.8618 22.5357 16.3542 22.94 16.9303 22.94ZM23.2408 22.94C23.8169 22.94 24.3093 22.5357 24.3792 21.9925V17.849C24.419 17.4434 24.2146 17.0657 23.8429 16.851C23.474 16.6362 23.0077 16.6362 22.6236 16.851C22.2519 17.0657 22.0476 17.4434 22.1024 17.849V21.9925C22.1573 22.5357 22.6497 22.94 23.2408 22.94ZM11.6772 21.9925C11.6223 22.5357 11.13 22.94 10.5388 22.94C9.94904 22.94 9.45528 22.5357 9.40179 21.9925V13.2632C9.36064 12.8703 9.565 12.48 9.9367 12.2652C10.3056 12.0505 10.7733 12.0505 11.1437 12.2652C11.5126 12.48 11.7197 12.8703 11.6772 13.2632V21.9925Z" fill="#030229"/>
+                
+                
+                </svg>
+                
+            <span x-show="open" x-transition class="{{ $isActive ? 'text-amber-400 font-semibold' : 'text-slate-500' }} font-['Nunito'] ml-8">
+                Product
+            </span>
+        </a>
 
-                <flux:menu class="w-[220px]">
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                    <span
-                                        class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black "
-                                    >
-                                        {{ auth()->user()->initials() }}
-                                    </span>
-                                </span>
+        <!-- Stock -->
+        @php $isActive = request()->routeIs('stock'); @endphp
+        <a href="{{ route('stock') }}" class="flex items-center px-4 py-3 transition group relative">
+            @if ($isActive)
+                <div class="absolute left-0 inset-0 bg-gradient-to-r from-amber-200 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
+            @endif
+            <svg width="25" height="25" viewBox="0 0 34 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+           
+                
+                <path 
+                fill="{{ request()->routeIs('stock') ? '#FBAE2C' : '#9CA3AF' }}"
+                fill-rule="evenodd" clip-rule="evenodd" d="M30.2863 13.9081C30.1006 14.0743 29.8486 14.1693 29.5833 14.1693C28.6017 14.1693 27.8058 14.8814 27.8058 15.7478C27.8058 16.6202 28.5924 17.3287 29.5647 17.3382C30.1125 17.343 30.5781 17.6848 30.5781 18.175V21.2193C30.5781 23.7818 28.2568 25.86 25.3917 25.86H21.0674C20.6204 25.86 20.2583 25.536 20.2583 25.136V22.5724C20.2583 22.0739 19.8205 21.6822 19.2634 21.6822C18.7196 21.6822 18.2686 22.0739 18.2686 22.5724V25.136C18.2686 25.536 17.9064 25.86 17.4608 25.86H8.33339C5.4815 25.86 3.14693 23.783 3.14693 21.2193V18.175C3.14693 17.6848 3.61251 17.343 4.16034 17.3382C5.13396 17.3287 5.91923 16.6202 5.91923 15.7478C5.91923 14.9051 5.14988 14.2642 4.14177 14.2642C3.87648 14.2642 3.62445 14.1693 3.43875 14.0031C3.25304 13.8369 3.14693 13.6114 3.14693 13.374V10.3C3.14693 7.74112 5.4868 5.64746 8.34665 5.64746H17.4608C17.9064 5.64746 18.2686 5.97148 18.2686 6.37146V9.40987C18.2686 9.89649 18.7196 10.3 19.2634 10.3C19.8205 10.3 20.2583 9.89649 20.2583 9.40987V6.37146C20.2583 5.97148 20.6204 5.64746 21.0674 5.64746H25.3917C28.2568 5.64746 30.5781 7.7245 30.5781 10.2882V13.2791C30.5781 13.5165 30.472 13.742 30.2863 13.9081ZM19.2634 19.3797C19.8205 19.3797 20.2583 18.9761 20.2583 18.4895V13.742C20.2583 13.2554 19.8205 12.8518 19.2634 12.8518C18.7196 12.8518 18.2686 13.2554 18.2686 13.742V18.4895C18.2686 18.9761 18.7196 19.3797 19.2634 19.3797Z" fill="#030229"/>
+                
+                
+                </svg>
+                
+            <span x-show="open" x-transition class="{{ $isActive ? 'text-amber-400 font-semibold' : 'text-slate-500' }} font-['Nunito'] ml-8">
+                Stock
+            </span>
+        </a>
 
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
+        <!-- Repository -->
+        @php $isActive = request()->routeIs('repository'); @endphp
+        <a href="{{ route('repository') }}" class="flex items-center px-4 py-3 transition group relative">
+            @if ($isActive)
+                <div class="absolute left-0 inset-0 bg-gradient-to-r from-amber-200 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
+            @endif
+            <svg width="25" height="25" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+           
+                
+                <path 
+                fill="{{ request()->routeIs('repository') ? '#FBAE2C' : '#9CA3AF' }}"
+                fill-rule="evenodd" clip-rule="evenodd" d="M22.5085 3.49759L22.5099 4.44458C26.288 4.71732 28.7838 7.08858 28.7878 10.725L28.8027 21.3692C28.8081 25.3339 26.1039 27.7733 21.7691 27.7797L11.1808 27.7923C6.87316 27.7973 4.13501 25.2998 4.12959 21.3237L4.11469 10.8046C4.10928 7.14413 6.51701 4.77919 10.2952 4.45973L10.2938 3.51275C10.2925 2.95718 10.7393 2.53924 11.3352 2.53924C11.931 2.53798 12.3779 2.95465 12.3792 3.51022L12.3806 4.39408L20.4244 4.38398L20.4231 3.50012C20.4217 2.94455 20.8686 2.52788 21.4644 2.52661C22.0467 2.52535 22.5072 2.94203 22.5085 3.49759ZM6.20149 11.1947L26.7038 11.1695V10.7275C26.6455 8.01284 25.1668 6.58857 22.5126 6.37644L22.5139 7.34868C22.5139 7.89162 22.0549 8.32219 21.4726 8.32219C20.8767 8.32345 20.4285 7.89415 20.4285 7.35121L20.4271 6.32846L12.3833 6.33856L12.3847 7.36005C12.3847 7.90425 11.9391 8.33355 11.3433 8.33355C10.7475 8.33481 10.2992 7.90677 10.2992 7.36257L10.2979 6.39033C7.65723 6.63402 6.19607 8.06334 6.20013 10.802L6.20149 11.1947ZM20.9025 16.9335V16.9474C20.916 17.5282 21.4306 17.9689 22.0549 17.9562C22.6642 17.9423 23.1504 17.4613 23.1369 16.8804C23.1084 16.3249 22.6196 15.8716 22.0115 15.8728C21.3886 15.8855 20.9011 16.3527 20.9025 16.9335ZM22.021 22.6028C21.3981 22.5902 20.8957 22.1116 20.8943 21.5308C20.8808 20.95 21.3805 20.4689 22.0034 20.455H22.0169C22.6534 20.455 23.1693 20.9336 23.1693 21.527C23.1707 22.1204 22.6561 22.6015 22.021 22.6028ZM15.3232 16.9537C15.3503 17.5345 15.8663 17.9878 16.4892 17.9625C17.0986 17.936 17.5847 17.4562 17.5576 16.8754C17.5427 16.3072 17.0417 15.8653 16.4323 15.8665C15.8094 15.8918 15.3219 16.3729 15.3232 16.9537ZM16.4946 22.546C15.8717 22.5712 15.3571 22.1179 15.3287 21.5371C15.3287 20.9563 15.8148 20.4765 16.4377 20.45C17.0471 20.4487 17.5495 20.8906 17.5631 21.4576C17.5915 22.0396 17.104 22.5194 16.4946 22.546ZM9.74402 16.9979C9.7711 17.5787 10.287 18.0332 10.91 18.0067C11.5193 17.9815 12.0055 17.5004 11.9771 16.9196C11.9635 16.3514 11.4625 15.9095 10.8517 15.9107C10.2288 15.936 9.74266 16.4171 9.74402 16.9979ZM10.9154 22.5523C10.2925 22.5788 9.77787 22.1242 9.74944 21.5434C9.74808 20.9626 10.2356 20.4815 10.8585 20.4563C11.4679 20.455 11.9703 20.8969 11.9838 21.4651C12.0123 22.046 11.5261 22.527 10.9154 22.5523Z" fill="#030229"/>
+                
+                
+                </svg>
+                
+            <span x-show="open" x-transition class="{{ $isActive ? 'text-amber-400 font-semibold' : 'text-slate-500' }} font-['Nunito'] ml-8">
+                Repository
+            </span>
+        </a>
 
-                    <flux:menu.separator />
+        <!-- Audit Log -->
+        @php $isActive = request()->routeIs('audit-log'); @endphp
+        <a href="{{ route('audit-log') }}" class="flex items-center px-4 py-3 transition group relative">
+            @if ($isActive)
+                <div class="absolute left-0 inset-0 bg-gradient-to-r from-amber-200 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
+            @endif
+            <svg width="25" height="25" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+           
+                
+                <path
+                fill="{{ request()->routeIs('audit-log') ? '#FBAE2C' : '#9CA3AF' }}"
+                 d="M21.19 4.99292C21.1351 5.30866 21.108 5.62444 21.1079 5.94019C21.1079 8.78254 23.6041 11.0807 26.6763 11.0808C27.019 11.0808 27.3482 11.0444 27.6909 10.9939V21.1873C27.6908 25.4709 24.9479 28.0095 20.2847 28.0095H10.1509C5.48634 28.0095 2.74283 25.4709 2.74271 21.1873V11.8396C2.74284 7.54463 5.48635 4.99292 10.1509 4.99292H21.19ZM21.4663 12.6736C21.0947 12.6357 20.7253 12.7873 20.5044 13.0652L17.187 17.0193L13.3863 14.2654C13.1531 14.1012 12.8783 14.0367 12.604 14.0632C12.3312 14.1012 12.0844 14.2391 11.9185 14.4412L7.85989 19.3064L7.77591 19.4197C7.54295 19.8226 7.65276 20.3407 8.064 20.6199C8.2559 20.7335 8.46186 20.8092 8.69485 20.8093C9.01163 20.822 9.3124 20.6691 9.50443 20.4304L12.9468 16.3484L16.856 19.0535L16.979 19.1277C17.4179 19.3424 17.9673 19.2423 18.2827 18.8621L22.2466 14.1521L22.1909 14.1765C22.4104 13.8986 22.4522 13.545 22.3013 13.2292C22.1518 12.9137 21.8213 12.699 21.4663 12.6736ZM26.8687 2.7439C28.6928 2.74395 30.1743 4.10868 30.1743 5.78882C30.1741 7.46877 28.6927 8.83271 26.8687 8.83276C25.0447 8.83276 23.5633 7.4688 23.563 5.78882C23.563 4.10865 25.0445 2.7439 26.8687 2.7439Z" fill="#030229"/>
+                
+                 
+                </svg>
+                
+            <span x-show="open"  x-transition class="{{ $isActive ? 'text-amber-400 font-semibold' : 'text-slate-500' }} font-['Nunito'] ml-8">
+                Audit Log
+            </span>
+        </a>
 
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown> --}}
-        </flux:sidebar>
-
-        <!-- Mobile User Menu -->
-        <flux:header class="lg:hidden">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
-
-            <flux:spacer />
-
-            <flux:dropdown position="top" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
-                    icon-trailing="chevron-down"
-                />
-
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                    <span
-                                        class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black "
-                                    >
-                                        {{ auth()->user()->initials() }}
-                                    </span>
-                                </span>
-
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-        </flux:header>
-
-        {{ $slot }}
-        @livewire('notifications')
-
-        @filamentScripts
-
-        @fluxScripts  
-            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/dialog.js"></script>
-  
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                document.documentElement.classList.remove("dark")
-            })
-        </script>
-        
-    </body>
-</html>
+        <!-- Settings -->
+        @php $isActive = request()->routeIs('settings'); @endphp
+        <a href="{{ route('settings') }}" class="flex items-center px-4 py-3 transition group relative">
+            @if ($isActive)
+                <div class="absolute left-0 inset-0 bg-gradient-to-r from-amber-200 to-indigo-300/0 opacity-20 rounded-tr-[5px] rounded-br-[5px]"></div>
+            @endif
+            <svg width="25" height="25" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+           
+                
+                <path 
+                fill="{{ request()->routeIs('settings') ? '#FBAE2C' : '#9CA3AF' }}"
+                d="M17.4425 2.52661C18.4796 2.52666 19.419 3.05695 19.9376 3.84009C20.1899 4.21907 20.3576 4.68725 20.3155 5.17993C20.2876 5.55873 20.4136 5.93771 20.6378 6.29126C21.3525 7.36491 22.9366 7.76937 24.17 7.16333C25.5577 6.43063 27.3105 6.87264 28.1094 8.12329L29.0479 9.61353C29.8609 10.8642 29.4125 12.4686 28.0108 13.1887C26.8195 13.833 26.3995 15.2605 27.1143 16.3469C27.3385 16.6878 27.5903 16.9787 27.9825 17.1555C28.4731 17.3955 28.8519 17.7746 29.1182 18.1536C29.6368 18.9368 29.5945 19.897 29.0899 20.7434L28.1094 22.259C27.5908 23.0675 26.6232 23.5725 25.628 23.5725C25.1375 23.5725 24.5911 23.4462 24.1427 23.1936C23.7783 22.9789 23.3576 22.9036 22.9093 22.9036C21.5217 22.9036 20.3577 23.9518 20.3155 25.2024C20.3155 26.6552 19.0261 27.7922 17.4141 27.7922H15.5079C13.882 27.7922 12.5928 26.6551 12.5928 25.2024C12.5647 23.9519 11.4012 22.9037 10.0137 22.9036C9.55138 22.9036 9.13068 22.979 8.78035 23.1936C8.33181 23.4463 7.77059 23.5725 7.29402 23.5725C6.28487 23.5725 5.31749 23.0675 4.7989 22.259L3.8321 20.7434C3.31353 19.9223 3.2853 18.9368 3.80378 18.1536C4.02799 17.7747 4.44848 17.3956 4.92488 17.1555C5.31735 16.9787 5.57038 16.688 5.80867 16.3469C6.50936 15.2606 6.08879 13.833 4.89753 13.1887C3.50988 12.4686 3.06147 10.8642 3.86043 9.61353L4.7989 8.12329C5.61187 6.87264 7.35035 6.43063 8.75203 7.16333C9.97145 7.76952 11.5558 7.36497 12.2706 6.29126C12.4947 5.93772 12.6207 5.55871 12.5928 5.17993C12.5648 4.68725 12.7191 4.21907 12.9854 3.84009C13.5041 3.05712 14.4429 2.55189 15.4659 2.52661H17.4425ZM16.4747 11.5969C14.2743 11.5972 12.4942 13.1889 12.4942 15.1721C12.4942 17.1553 14.2743 18.7344 16.4747 18.7346C18.6753 18.7346 20.4141 17.1555 20.4141 15.1721C20.4141 13.1888 18.6753 11.5969 16.4747 11.5969Z" fill="#030229"/>
+                
+                
+                </svg>
+                
+            <span x-show="open" x-transition class="{{ $isActive ? 'text-amber-400 font-semibold' : 'text-slate-500' }} font-['Nunito'] ml-8">
+                Settings
+            </span>
+        </a>
+    </nav>
+</div>

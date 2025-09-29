@@ -6,6 +6,7 @@ use App\Events\BranchSelected;
 use App\Jobs\SendDiscordWebhook;
 use App\Listeners\StoreBranchIdInSession;
 use Filament\Notifications\Livewire\DatabaseNotifications;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -37,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
             $message .= '**File:** '.$e->getFile().':'.$e->getLine();
 
             SendDiscordWebhook::dispatch($message);
+            
+            Paginator::defaultView('view-name');
         });
 
     }
