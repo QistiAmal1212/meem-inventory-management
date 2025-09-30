@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Imports\ProductsImport;
 use App\Models\Product as ModelsProduct;
 use App\Models\References\ProductCategory;
+use App\Models\References\ProductGrade;
 use App\Models\References\ProductMetal;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -31,11 +32,42 @@ class Product extends Component
 
     public $selectedMetal = null;
 
+    public $existingNames = [];
+
+    public $existingSkus = [];
+   
+    public $categories;
+
+    public $metals;
+
+    public $grades;
+
+  
     public function mount()
     {
         $this->CategoryList = ProductCategory::pluck('name', 'id')->toArray();
         $this->MetalList = ProductMetal::pluck('name', 'id')->toArray();
+       $this->data();
+    
+    }
 
+    public function data()
+    {
+        $this->existingNames = ModelsProduct::pluck('name')->map(fn($v) => strtolower(trim($v)))->toArray();
+        $this->existingSkus  = ModelsProduct::pluck('sku')->map(fn($v) => strtolower(trim($v)))->toArray();
+
+        // fetch reference table for validation
+        $this->categories = ProductCategory::pluck('name')
+        ->map(fn($v) => strtolower(trim($v)))
+        ->toArray();
+    
+    $this->metals = ProductMetal::pluck('name')
+        ->map(fn($v) => strtolower(trim($v)))
+        ->toArray();
+    
+    $this->grades = ProductGrade::pluck('grade')
+        ->map(fn($v) => strtolower(trim($v)))
+        ->toArray();
     }
 
     // Reset pagination when search text changes
@@ -59,11 +91,21 @@ class Product extends Component
         $product = ModelsProduct::find($id);
         if ($product) {
             $product->delete();
+            $this->data();
             $this->dispatch('toast', type: 'success', message: 'Product deleted successfully!', description: 'The product has been permanently removed from the database.');
 
         } else {
             $this->dispatch('toast', type: 'danger', message: 'Product not found.');
         }
+    }
+
+    public function bulkDelete($ids)
+    {
+      ModelsProduct::whereIn('id',$ids)->delete();
+      $this->banner()
+      ->leave(seconds: 2)
+      ->success('Done!', 'Your data has been deleted!')
+      ->send();
     }
 
     public function uploadFile()
@@ -73,12 +115,12 @@ class Product extends Component
             Excel::import(new ProductsImport, $this->file->getRealPath());
            
     $this->banner()
-    ->enter(seconds: 3) // Enter in 3 seconds
-    ->leave(seconds: 10) // Leave in 10 seconds
-    ->success('seccuess')
+    ->leave(seconds: 2)
+    ->success('Done!', 'Your data has been upload!')
     ->send();
 
             $this->file = null;
+            $this->data();
             // return redirect()->route('products');
         } catch (\Illuminate\Validation\ValidationException $e) {
             dd($e->errors());

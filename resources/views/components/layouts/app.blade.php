@@ -1,7 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light"> 
-     <x-ts-banner wire class="z-600"/> 
+   
+     <x-ts-banner wire classes="z-600"/> 
+   
     <head>
         @include('partials.head')
         <style>

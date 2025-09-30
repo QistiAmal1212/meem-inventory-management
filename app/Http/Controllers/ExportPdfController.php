@@ -15,4 +15,18 @@ class ExportPdfController extends Controller
 
         return $pdf->download('product.pdf');
     }
+
+    public function exportProductStock()
+    {
+        $products = Product::all();
+
+        $pdf = Pdf::loadView('exports.pdf.product-stock', [
+            'products' => $products
+        ])->setPaper('A4', 'portrait')
+        ->setOptions([
+            'isRemoteEnabled' => true,
+        ]);
+    
+        return $pdf->stream('stock.pdf'); 
+    }
 }

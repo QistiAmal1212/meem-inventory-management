@@ -6,6 +6,12 @@
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
+@source '../views/**/*.blade.php';  
+
+
+@source '../views/components/**/*.blade.php';
+@source '../views/layouts/**/*.blade.php';
+
 @custom-variant dark (&:not(*));
 
 /*----------------------------- powergrid code ---------------------------*/

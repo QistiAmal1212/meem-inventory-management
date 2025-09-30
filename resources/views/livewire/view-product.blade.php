@@ -85,7 +85,12 @@
   
           <div class="px-4 py-3 grid grid-cols-3 gap-4">
             <dt class="text-sm font-semibold text-gray-600">Total Quantity</dt>
-            <dd class="col-span-2 text-sm text-gray-800"> {{ $product->productStock->sum('min_quantity') }}</dd>
+            <dd class="col-span-2 text-sm text-gray-800"> {{ $product->productStock->quantity }}</dd>
+          </div>
+
+          <div class="px-4 py-3 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-semibold text-gray-600">Minimum Quantity</dt>
+            <dd class="col-span-2 text-sm text-gray-800"> {{ $product->productStock->min_quantity }}</dd>
           </div>
   
           <div class="px-4 py-3 grid grid-cols-3 gap-4">

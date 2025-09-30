@@ -1,10 +1,17 @@
 <div 
     x-cloak
-    x-data="fileUpload()"
+    x-data="fileUpload(
+        @entangle('existingNames'),
+        @entangle('existingSkus'),
+        @entangle('categories'),
+        @entangle('metals'),
+        @entangle('grades')
+     )"
     x-on:open-upload.window="open = true"
     x-show="open"
     class="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
     x-transition
+    x-effect="!open && reset()"
 >
     <div @click.away="open = false"
          class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 transform transition-all">
@@ -26,7 +33,7 @@
             </a>
         </div>
 
-        <!-- File Upload (Drag & Drop style) -->
+        <!-- File Upload -->
         <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
             <div class="flex flex-col items-center justify-center pt-4 pb-2">
                 <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,56 +51,51 @@
             />
         </label>
 
-        <!-- Professional Preview -->
         <template x-if="fileName">
-            <div class="mt-4 border rounded-xl bg-gray-50 overflow-hidden shadow-sm">
-                <div class="flex items-center justify-between px-4 py-3 bg-white border-b">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 00-2 2v16a2 
-                                2 0 002 2h12a2 2 0 002-2V8z"/>
-                        </svg>
-                        <div>
-                            <p class="font-medium text-gray-800" x-text="fileName"></p>
-                            <p class="text-xs text-gray-500" x-text="fileSize + ' • ' + fileType"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CSV Data Preview -->
-                <div class="px-4 py-3">
-                    <template x-if="filePreview.length">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs text-left text-gray-600 border">
-                                <thead class="bg-gray-100 text-gray-700 font-semibold">
-                                    <tr>
-                                        <template x-for="(col, index) in filePreview[0]" :key="index">
-                                            <th class="px-2 py-1 border" x-text="'Col ' + (index+1)"></th>
-                                        </template>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template x-for="(row, rIndex) in filePreview" :key="rIndex">
-                                        <tr>
-                                            <template x-for="(cell, cIndex) in row" :key="cIndex">
-                                                <td class="px-2 py-1 border truncate max-w-[120px]" x-text="cell"></td>
-                                            </template>
-                                        </tr>
+            <div class="mt-4 border rounded-xl bg-gray-50 overflow-hidden shadow-sm max-h-[400px] flex flex-col">
+                
+                <!-- Table scrollable -->
+                <div class="overflow-auto flex-1">
+                    <table class="w-full text-xs text-left text-gray-600 border">
+                        <thead class="bg-gray-100 text-gray-700 font-semibold sticky top-0">
+                            <tr>
+                                <template x-for="col in fileHeader" :key="col">
+                                    <th class="px-2 py-1 border" x-text="col"></th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(row, rIndex) in filePreview" :key="rIndex">
+                                <tr>
+                                    <template x-for="(cell, cIndex) in row" :key="cIndex">
+                                        <td class="px-2 py-1 border truncate max-w-[120px]"
+                                            :class="getCellClass(fileHeader[cIndex], cell)"
+                                            x-text="cell">
+                                        </td>
                                     </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
                 </div>
+        
+                <!-- Errors scrollable -->
+                <template x-if="fileErrors.length">
+                    <div class="mt-2 p-2 border border-red-200 rounded text-red-700 text-sm overflow-auto max-h-32">
+                        <template x-for="error in fileErrors" :key="error">
+                            <p x-text="error"></p>
+                        </template>
+                    </div>
+                </template>
             </div>
         </template>
+        
 
-        <!-- Error -->
+
         @error('file') 
             <p class="mt-2 text-xs text-red-500">{{ $message }}</p> 
         @enderror
 
-        <!-- Footer -->
         <div class="mt-6 flex justify-end gap-3">
             <button 
                 @click="open = false"
@@ -104,7 +106,7 @@
             <button 
                 @click="$wire.uploadFile(); open = false"
                 class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium shadow-sm disabled:opacity-50"
-                :disabled="!fileName"
+               :disabled="!fileName || fileErrors.length > 0"
             >
                 Upload
             </button>
@@ -113,33 +115,81 @@
 </div>
 
 <script>
-function fileUpload() {
+function fileUpload(existingNames = [], existingSkus = [], categories = [], metals = [], grades = []) {
     return {
         open: false,
         fileName: '',
-        fileSize: '',
-        fileType: '',
         filePreview: [],
+        fileHeader: [],
+        fileErrors: [],
+        existingNames: existingNames,
+        existingSkus: existingSkus,
+        categories: categories,
+        metals: metals,
+        grades: grades,
 
         handleFile(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             this.fileName = file.name;
-            this.fileSize = (file.size / 1024).toFixed(1) + ' KB';
-            this.fileType = file.type || 'CSV';
-
             const reader = new FileReader();
             reader.onload = (event) => {
-                const text = event.target.result;
-                const rows = text.split('\n').map(r => r.split(','));
+                const text = event.target.result.trim();
+                const rows = text.split(/\r?\n/).map(r => r.split(','));
+
+                this.fileHeader = rows.shift();
                 this.filePreview = rows;
+
+                // Reset errors
+                this.fileErrors = [];
+
+                // Collect errors
+                this.filePreview.forEach((row, rIndex) => {
+                    row.forEach((cell, cIndex) => {
+                        const column = this.fileHeader[cIndex].trim().toLowerCase();
+                        const val = cell.trim().toLowerCase();
+
+                         // Required error
+        if (!val) {
+            this.fileErrors.push(`Row ${rIndex + 1}, column "${column}" cannot be empty.`);
+            return; // skip other checks if empty
+        }
+
+        // Column-specific validations
+        if (column === 'weight' && !/^\d+(\.\d+)?$/.test(val)) this.fileErrors.push(`Row ${rIndex + 1}: Weight must be a number.`);
+        if (column === 'name' && this.existingNames.includes(val.toLowerCase())) this.fileErrors.push(`Row ${rIndex + 1}: Duplicate name "${cell}".`);
+        if (column === 'sku' && this.existingSkus.includes(val.toLowerCase())) this.fileErrors.push(`Row ${rIndex + 1}: Duplicate SKU "${cell}".`);
+        if (column === 'category' && !this.categories.includes(val.toLowerCase())) this.fileErrors.push(`Row ${rIndex + 1}: Invalid category "${cell}".`);
+        if (column === 'metal' && !this.metals.includes(val.toLowerCase())) this.fileErrors.push(`Row ${rIndex + 1}: Invalid metal "${cell}".`);
+        if (column === 'grade' && !this.grades.includes(val.toLowerCase())) this.fileErrors.push(`Row ${rIndex + 1}: Invalid grade "${cell}".`);
+                    });
+                });
             };
             reader.readAsText(file);
-
-           
         },
-        
+
+        getCellClass(column, value) {
+            const val = value.trim().toLowerCase();
+            column = column.trim().toLowerCase();
+
+            if (!val) return 'bg-red-100 text-red-700 font-semibold';
+            if (column === 'name' && this.existingNames.includes(val)) return 'bg-red-100 text-red-700 font-semibold';
+            if (column === 'sku' && this.existingSkus.includes(val)) return 'bg-red-100 text-red-700 font-semibold';
+            if (column === 'weight' && !/^\d+(\.\d+)?$/.test(val)) return 'bg-red-100 text-red-700 font-semibold';
+            if (column === 'category' && !this.categories.includes(val)) return 'bg-red-100 text-red-700 font-semibold';
+            if (column === 'metal' && !this.metals.includes(val)) return 'bg-red-100 text-red-700 font-semibold';
+            if (column === 'grade' && !this.grades.includes(val)) return 'bg-red-100 text-red-700 font-semibold';
+
+            return '';
+        },
+        reset() {
+            this.fileName = '';
+            this.filePreview = [];
+            this.fileHeader = [];
+            this.fileErrors = [];
+        }
     }
 }
+
 </script>

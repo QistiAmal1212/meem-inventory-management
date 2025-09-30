@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -67,10 +68,14 @@ class Product extends Model
         return $this->hasMany(ProductInOut::class);
     }
 
-    public function productStock(): HasMany
-    {
-        return $this->hasMany(ProductStock::class);
-    }
+ public function productStock(): HasOne
+{
+    $branchId = session('branch_id');
+
+    return $this->hasOne(ProductStock::class)
+                ->where('branch_id', $branchId);
+}
+
 
     public function productSale(): HasMany
     {

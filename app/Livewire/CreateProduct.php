@@ -12,10 +12,12 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use TallStackUi\Traits\Interactions;
 
 #[Layout('components.layouts.app')]
 class CreateProduct extends Component
 {
+    use Interactions;
     use WithFileUploads;
 
     public $categories = [];
@@ -59,7 +61,7 @@ class CreateProduct extends Component
 
     public function mount()
     {
-        $this->categories = ProductCategory::pluck('name', 'id')->take('8')->toArray();
+        $this->categories = ProductCategory::pluck('name', 'id')->toArray();
         $this->metals = ProductMetal::pluck('name', 'id')->toArray();
         $this->grades = ProductGrade::pluck('grade', 'id')->toArray();
     }
@@ -67,13 +69,32 @@ class CreateProduct extends Component
     public function addOption($type, $value)
     {
         if ($type === 'Category') {
-            $this->categories[] = $value;
+            $checkExisting = ProductCategory::where('name',$value)->first();
+           
+            ProductCategory::create([
+                "name" => $value
+            ]);
+            $this->categories = ProductCategory::pluck('name', 'id')->toArray();
         } elseif ($type === 'Metal') {
-
-            $this->metals[] = $value;
+            $checkExisting = ProductMetal::where('name',$value)->first();
+            ProductMetal::create([
+                "name" => $value
+            ]);
+            $this->metals = ProductMetal::pluck('name', 'id')->toArray();
         } elseif ($type === 'Grade') {
-            $this->grades[] = $value;
-        }
+            $checkExisting = ProductGrade::where('grade',$value)->first();
+            ProductGrade::create([
+                "grade" => $value
+            ]);
+            $this->grades = ProductGrade::pluck('grade', 'id')->toArray();
+        } 
+        
+        if($checkExisting)
+            {
+                $this->dispatch('toast', type: 'danger', message: 'Added data failed!', description: 'The data you want is already exist!');
+                return;
+            }
+        $this->dispatch('toast', type: 'success', message: 'Added successfully!', description: 'The data has been successfull added to database.');
     }
 
     public function submit()
@@ -114,8 +135,12 @@ class CreateProduct extends Component
                     $product->images()->create(['path' => $path]);
                 }
             }
-
-            session()->flash('toast', ['type' => 'success', 'message' => 'Product added successfully!', 'description' => 'The product has been permanently saved to the database.']);
+            $this->banner()
+            ->leave(seconds: 2)
+            ->flash()
+            ->success('Done!', 'Product added successfully!')
+            ->send();
+            // session()->flash('toast', ['type' => 'success', 'message' => 'Product added successfully!', 'description' => 'The product has been permanently saved to the database.']);
 
             return redirect()->route('product', $product->id);
 

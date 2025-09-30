@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('product/export/', [ExportExcelController::class, 'exportProduct'])->name('product.export');
     Route::get('product/export/pdf', [ExportPdfController::class, 'exportProduct'])->name('product.export.pdf');
+
+    Route::get('product-stock/export/', [ExportExcelController::class, 'exportProductStock'])->name('product-stock.export');
+    Route::get('product-stock/export/pdf', [ExportPdfController::class, 'exportProductStock'])->name('product-stock.export.pdf');
 });
 
 require __DIR__.'/auth.php';
