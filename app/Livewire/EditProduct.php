@@ -98,10 +98,10 @@ class EditProduct extends Component
     {
 
         try {
-            $this->validate([
-                'name' => 'required|string|max:255|unique:products,name',
-                'reference' => 'required|string|max:255|unique:products,sku',
-            ]);
+            // $this->validate([
+            //     'name' => 'required|string|max:255|unique:products,name',
+            //     'reference' => 'required|string|max:255|unique:products,sku',
+            // ]);
             // Save to DB
             $this->product->Update([
                 'name' => $this->name,

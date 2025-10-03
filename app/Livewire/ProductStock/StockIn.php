@@ -22,15 +22,17 @@ class StockIn extends Component
     public $quantity;
 
     #[On('stock-in-form')] 
-    public function openModal($productId)
+    public function openModal($productId, $category)
     {
-    
+      $this->categorySelected = $category;
+
       $this->showModal = true; 
 
       if($productId)
       {
        $this->productId = $productId;
        $this->product = Product::find($productId);
+       $this->productSelected =  $this->product->id;
       }
 
     }

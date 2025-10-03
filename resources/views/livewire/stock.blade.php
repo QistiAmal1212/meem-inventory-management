@@ -183,7 +183,7 @@
 
                   <!-- Stock In button -->
                   <button 
-                      @click="$dispatch('stock-in-form', { productId: {{ $product->id }} })"
+                  @click="$dispatch('stock-in-form', { productId: {{ $product->id }}, category: 1 })"
                       class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 bg-white hover:bg-gray-100" 
                       title="Stock In"
                   >
@@ -194,7 +194,7 @@
 
                   <!-- Stock Out button -->
                   <button 
-                      @click="$dispatch('stock-out-form', { productId: {{ $product->id }} })"
+                      @click="$dispatch('stock-in-form', { productId: {{ $product->id }}, category: 2 })"
                       class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 bg-white hover:bg-gray-100" 
                       title="Stock Out"
                   >

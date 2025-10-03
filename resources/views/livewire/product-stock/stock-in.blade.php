@@ -61,11 +61,12 @@
              <div class="space-y-1">
                 <x-forms.label label="Product" required="true" />
                 <x-select-searchable-qisti 
-                   :options="$productList" 
+                   
                     placeholder="Select Product" 
                     name="productSelected" 
                     model="productSelected" 
-                    value="{{$product?->id}}"
+                    value="{{ $productSelected }}" 
+                    :options="$productList"
                 />
                 <p x-cloak x-show="(errors.productSelected && !productSelected)" class="text-xs text-red-500">
                     product is required.
@@ -87,6 +88,7 @@
                     name="categorySelected" 
                     model="categorySelected" 
                     :options="$categoryList" 
+                    value="{{ $categorySelected }}"
                 />
                 <p x-cloak x-show="(errors.categorySelected && !categorySelected)" class="text-xs text-red-500">
                     category is required.
@@ -102,57 +104,84 @@
                 rows="3" 
                 maxlength="300" 
             />
-            <div x-data="cameraHandler()" class="space-y-3">
-                <!-- Normal File Input -->
+            <div 
+            x-data="cameraHandler()" 
+            class="space-y-3"
+        >
+            <!-- Dropzone -->
+            <div 
+                class="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-yellow-500 transition"
+                @dragover.prevent="$el.classList.add('border-yellow-500', 'bg-yellow-50')"
+                @dragleave.prevent="$el.classList.remove('border-yellow-500', 'bg-yellow-50')"
+                @drop.prevent="handleDrop($event)"
+                @click="$refs.fileInput.click()"
+            >
+                <p class="text-gray-500">Drag & drop an image here, or <span class="text-yellow-600 font-medium">click to upload</span></p>
                 <input 
                     type="file" 
-                    accept="image/*" 
-                    class="block w-full text-sm text-gray-600"
-                    wire:model="photo"
+                    accept="image/*"
+                    class="hidden"
+                    x-ref="fileInput"
+                    @change="previewFile($event)"
                 >
-            
-                <!-- Button to open camera -->
-                <button 
-                    type="button" 
-                    @click="startCamera" 
-                    x-show="!cameraActive"
-                    class="px-3 py-2 rounded-md bg-yellow-500 text-white text-sm hover:bg-yellow-600"
-                >
-                    Use Camera
-                </button>
-            
-                <!-- Camera UI -->
-                <div x-show="cameraActive" class="space-y-2">
-                    <!-- Live Preview -->
-                    <video x-ref="video" autoplay playsinline class="w-full rounded-lg bg-black"></video>
-            
-                    <div class="flex gap-2">
-                        <!-- Capture Button -->
-                        <button 
-                            type="button" 
-                            @click="takePhoto" 
-                            class="flex-1 px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                        >
-                            Capture
-                        </button>
-            
-                        <!-- Cancel Camera -->
-                        <button 
-                            type="button" 
-                            @click="stopCamera" 
-                            class="flex-1 px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            
-                <!-- Hidden field for Livewire -->
-                <input type="hidden" x-ref="photo" wire:model="photo">
             </div>
-            
-            
+        
+            <!-- Preview -->
+            <template x-if="preview">
+                <img :src="preview" class="w-full rounded-lg border border-gray-200 shadow-sm mt-3" />
+            </template>
+        
+            <!-- Button to open camera -->
+            <div class="flex justify-center">
+
+<!-- Camera Button -->
+<button 
+    type="button" 
+    @click="startCamera" 
+    x-show="!cameraActive"
+    class="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-500 text-white hover:bg-yellow-600 shadow-md transition"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         fill="none" 
+         viewBox="0 0 24 24" 
+         stroke-width="1.5" 
+         stroke="currentColor" 
+         class="w-6 h-6">
+        <path stroke-linecap="round" 
+              stroke-linejoin="round" 
+              d="M6.75 7.5l1.5-2.25h7.5l1.5 2.25h2.25A1.5 1.5 0 0121 9v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 18V9a1.5 1.5 0 011.5-1.5h2.25zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+    </svg>
+</button>
+</div>
+
+        
+            <!-- Camera UI -->
+            <div x-show="cameraActive" class="space-y-2">
+                <video x-ref="video" autoplay playsinline class="w-full rounded-lg bg-black"></video>
+        
+                <div class="flex gap-2">
+                    <button 
+                        type="button" 
+                        @click="takePhoto" 
+                        class="flex-1 px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                    >
+                        Capture
+                    </button>
+        
+                    <button 
+                        type="button" 
+                        @click="stopCamera" 
+                        class="flex-1 px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        
+            <!-- Hidden Livewire field -->
+            <input type="hidden" x-ref="photo" wire:model="photo">
         </div>
+        
 
         <!-- Footer -->
         <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
@@ -181,14 +210,14 @@
             categorySelected: @entangle('categorySelected'),
             quantity: @entangle('quantity'),
             remark: @entangle('remark'),
-            images: @entangle('images'),
+            photo: @entangle('photo'),
             open: @entangle('showModal'),
        
 
             errors: {},
 
              submit() {
-                console.log('BITCH');
+
                 this.errors = {};
                 if (!this.productSelected) this.errors.productSelected = true;
                 if (!this.quantity) this.errors.quantity = true;
@@ -201,48 +230,70 @@
     }
 
     function cameraHandler() {
-                return {
-                    video: null,
-                    stream: null,
-                    cameraActive: false,
-            
-                    startCamera() {
-                        this.video = this.$refs.video;
-                        navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } } })
-                            .then(stream => {
-                                this.stream = stream;
-                                this.video.srcObject = stream;
-                                this.cameraActive = true;
-                            })
-                            .catch(err => {
-                                console.error("Camera error:", err);
-                            });
-                    },
-            
-                    takePhoto() {
-                        const canvas = document.createElement("canvas");
-                        canvas.width = this.video.videoWidth;
-                        canvas.height = this.video.videoHeight;
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(this.video, 0, 0);
-            
-                        const dataUrl = canvas.toDataURL("image/png");
-                        this.$refs.photo.value = dataUrl;
-            
-                        // Send Base64 to Livewire
-                        @this.set('photo', dataUrl);
-            
-                        this.stopCamera();
-                    },
-            
-                    stopCamera() {
-                        if (this.stream) {
-                            this.stream.getTracks().forEach(track => track.stop());
-                        }
-                        this.cameraActive = false;
-                    }
-                }
+    return {
+        video: null,
+        stream: null,
+        cameraActive: false,
+        preview: null,
+
+        startCamera() {
+            this.video = this.$refs.video;
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } } })
+                .then(stream => {
+                    this.stream = stream;
+                    this.video.srcObject = stream;
+                    this.cameraActive = true;
+                })
+                .catch(err => console.error("Camera error:", err));
+        },
+
+        takePhoto() {
+            const canvas = document.createElement("canvas");
+            canvas.width = this.video.videoWidth;
+            canvas.height = this.video.videoHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(this.video, 0, 0);
+
+            const dataUrl = canvas.toDataURL("image/png");
+            this.$refs.photo.value = dataUrl;
+            this.preview = dataUrl;
+
+            @this.set('photo', dataUrl);
+            this.stopCamera();
+        },
+
+        previewFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            this.readFile(file);
+        },
+
+        handleDrop(event) {
+            const file = event.dataTransfer.files[0];
+            if (!file) return;
+            this.readFile(file);
+        },
+
+        readFile(file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                this.preview = e.target.result;
+                this.$refs.photo.value = e.target.result;
+                @this.set('photo', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        },
+
+        stopCamera() {
+            if (this.stream) {
+                this.stream.getTracks().forEach(track => track.stop());
             }
+            this.cameraActive = false;
+        }
+    }
+
+}
+
  </script>
     
 
