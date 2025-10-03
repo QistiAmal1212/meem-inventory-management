@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductInOut extends Model
 {
+    protected $table = "product_in_out";
+    
     protected $fillable =
         [
             'product_id',
@@ -15,6 +17,8 @@ class ProductInOut extends Model
             'in_out',
             'user_id',
             'event',
+            'quantity',
+            'remark',
         ];
 
     public function product(): BelongsTo

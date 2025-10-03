@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <div 
-    class="h-screen flex flex-col border-r border-gray-100 transition-all duration-300 z-50 w-60"
+    class="hidden h-screen lg:flex flex-col border-r border-gray-100 transition-all duration-300 z-50 w-60"
     :class="open ? '!w-60' : '!w-20'"
 >
     <!-- Logo + Collapse Button -->
@@ -149,4 +149,60 @@
             </span>
         </a>
     </nav>
+</div>
+
+<div x-data="{ open: true, mobileOpen: false }"  class="lg:hidden">
+<!-- Mobile overlay toggle button -->
+<div class="lg:hidden p-4">
+    <button @click="mobileOpen = true" class="text-gray-700">
+        <!-- Hamburger icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+</div>
+
+
+  <!-- Mobile Sidebar Overlay -->
+  <div 
+  class="fixed inset-0 z-50 lg:hidden"
+  x-show="mobileOpen"
+  x-transition.opacity
+  style="display: none;"
+>
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black/50" @click="mobileOpen = false"></div>
+
+  <!-- Sidebar panel -->
+  <div class="absolute left-0 top-0 h-full w-64 bg-white shadow-lg p-4 overflow-y-auto"
+       x-show="mobileOpen"
+       x-transition:enter="transition transform duration-300"
+       x-transition:enter-start="-translate-x-full"
+       x-transition:enter-end="translate-x-0"
+       x-transition:leave="transition transform duration-300"
+       x-transition:leave-start="translate-x-0"
+       x-transition:leave-end="-translate-x-full"
+  >
+      <div class="flex items-center justify-between mb-6">
+          <img src="{{ asset('images/meemgoldlogo.png') }}" alt="MeemGold" class="h-10">
+          <button @click="mobileOpen = false">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+          </button>
+      </div>
+      
+      <!-- Navigation -->
+      <nav class="space-y-1">
+          <!-- Repeat your sidebar links -->
+          <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded">
+              Dashboard
+          </a>
+          <a href="{{ route('product') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded">
+              Product
+          </a>
+          <!-- ...rest of links -->
+      </nav>
+  </div>
+</div>
 </div>

@@ -4,15 +4,21 @@ namespace App\Livewire;
 
 use App\Imports\ProductsImport;
 use App\Models\Product as ModelsProduct;
+use App\Models\ProductStock;
 use App\Models\References\ProductCategory;
 use App\Models\References\ProductGrade;
 use App\Models\References\ProductMetal;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use TallStackUi\Traits\Interactions;
+use Prism\Prism\Prism;
+use Prism\Prism\ValueObjects\ProviderTool;
+use Prism\Prism\ValueObjects\Media\Image;
+use Prism\Prism\Enums\Provider;
 
 #[Layout('components.layouts.app')]
 class Stock extends Component
@@ -44,7 +50,14 @@ class Stock extends Component
 
     public $minQty;
 
+    public $responseAi;
   
+    #[On('branch-changed')]
+    public function refreshOnBranchChanged()
+    {
+        $this->reset(); 
+    }
+
     public function mount()
     {
         $this->CategoryList = ProductCategory::pluck('name', 'id')->toArray();
@@ -112,7 +125,14 @@ class Stock extends Component
 
     public function setMinimumQuantity($stockId, $minQty)
     {
-        dd($stockId.'-'.$minQty);
+        $stock = ProductStock::where('product_id', $stockId)->where('branch_id', session('branch_id'))->first();
+        $stock->update([
+            "min_quantity" => $minQty
+        ]);
+        $this->banner()
+        ->leave(seconds: 2)
+        ->success('Done!', 'Your data has been updated!')
+        ->send();
     }
 
     public function uploadFile()
@@ -133,6 +153,24 @@ class Stock extends Component
             dd($e->errors());
         }
        
+    }
+
+    public function getAiSuggestion()
+    {
+      
+        $test = Prism::text()
+        ->using(Provider::Gemini, 'gemini-2.0-flash')
+        ->withPrompt(
+            'Anda adalah pakar pengurusan stok. Berdasarkan data dalam dokumen ini, sila analisis stok semasa dan berikan cadangan strategi pengurusan stok yang paling efektif. 
+            Jawapan hendaklah ringkas, tidak lebih daripada 100 patah perkataan, dan disusun dalam bentuk **bullet points** supaya mudah dibaca.',
+            [
+                Image::fromUrl(url: 'https://batuoibbjnkscecpxiav.supabase.co/storage/v1/object/public/test/stock%20(2).pdf')
+            ]
+        )
+        ->asText();
+    
+    return $test->text;
+    
     }
 
     public function render()

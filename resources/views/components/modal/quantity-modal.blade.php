@@ -42,7 +42,9 @@
 
             <!-- Modal footer button overrides the default button text -->
             <div class="flex justify-end mt-2">
-                <button type="button" @click="@this.setMinimumQuantity(productId, minQty)" 
+                <button type="button"  @click="
+                $wire.setMinimumQuantity(productId, minQty).then(() => { {{ $show }} = false; })
+            " 
                 :disabled="minQty === null || minQty === '' || minQty < 0" class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-md font-medium transition disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed">
                     Save
                 </button>

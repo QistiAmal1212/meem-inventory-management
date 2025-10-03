@@ -17,12 +17,14 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('branch_id');
-            $table->string('event')->comment('Admin added 2 (0.25gold), Abu stock out 2gold (0.25gold) (sale product)');
+            $table->integer('quantity')->default(0);
+            $table->unsignedBigInteger('event')->comment('3 for sales, 1 for restock, 2 for stockout');
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
+    /**xhamal
      * Reverse the migrations.
      */
     public function down(): void

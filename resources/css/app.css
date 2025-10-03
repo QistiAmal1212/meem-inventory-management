@@ -12,6 +12,7 @@
 @source '../views/components/**/*.blade.php';
 @source '../views/layouts/**/*.blade.php';
 
+
 @custom-variant dark (&:not(*));
 
 /*----------------------------- powergrid code ---------------------------*/
@@ -37,32 +38,9 @@
  --color-pg-primary-950: oklch(0.145 0 0);
 }
 
-select {
-  appearance: none !important; /* Remove native arrow */
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  background-image: none !important; /* Remove conflicting icon */
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 1rem auto;
-}
-
-/* Optional: Add your own custom arrow */
-select.custom-select {
-  background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='currentColor' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
-  padding-right: 2rem; /* Space for arrow */
-}
-
-
-:root {
-    /* Disable all Flux dark-mode color variables */
-    --color-accent: unset !important;
-    --color-accent-content: unset !important;
-    --color-accent-foreground: unset !important;
-  }
   
 
-@layer base {
+/* @layer base {
     input,
     textarea,
     select {
@@ -79,7 +57,7 @@ select.custom-select {
     label {
       color: black !important;
     }
-  }
+  } */
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 

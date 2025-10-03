@@ -19,71 +19,54 @@
 <body class="bg-gray-50 text-[#1b1b18] font-['Poppins'] min-h-screen flex flex-col">
 
     <!-- Wrapper -->
-    <div class="flex flex-col bg-white min-h-screen w-full overflow-hidden">
+    <div class="flex flex-col bg-white min-h-screen w-full overflow-hidden relative">
 
         <!-- Top Bar -->
-        <div class="w-[90%] px-[5%] py-5 ml-[10%] flex items-center">
+        <div class="w-full px-6 md:px-[5%] py-5 flex items-center justify-between">
             <!-- Logo -->
-            <img class="w-28 h-11" src="{{ asset('images/meemgoldlogo.png') }}" alt="Meem Gold Logo" />
-
-            <!-- Navigation -->
-            <div class="flex ml-[30%] items-center space-x-8 text-blue-950 text-sm font-medium">
-                <a href="#" class="text-right justify-start text-blue-950 text-sm font-medium font-['Poppins']">Home</a>
-                <a href="#" class="text-right justify-start text-blue-950 text-sm font-medium font-['Poppins']">About us</a>
-                <a href="#" class="text-right justify-start text-blue-950 text-sm font-medium font-['Poppins']">How it works</a>
-                <a href="#" class="text-right justify-start text-blue-950 text-sm font-medium font-['Poppins']">Services</a>
-                <a href="#" class="text-right justify-start text-blue-950 text-sm font-medium font-['Poppins']">Contact</a>
-            </div>
+            <img class="w-24 h-9 md:w-28 md:h-11" src="{{ asset('images/meemgoldlogo.png') }}" alt="Meem Gold Logo" />
 
             @if (Route::has('login'))
-            @auth
-            <a
-            href="{{ route('dashboard') }}"
-            class="w-[120px] h-10 ml-[40px] inline-flex items-center justify-center rounded-full bg-amber-400 hover:bg-amber-500 transition duration-200 text-white text-sm font-medium z-10"  
-        >
-            Dashboard
-        </a>
-            @else
-                <!-- Log In Button -->
-                <a
-                href="{{ route('login') }}"
-                class="w-[120px] h-10 ml-[40px] inline-flex items-center justify-center rounded-full bg-amber-400 hover:bg-amber-500 transition duration-200 text-white text-sm font-medium z-10"  
-            >
-                Log In
-            </a>
-            
-            @endauth
-        @endif
-            </div>
-
+                @auth
+                    <a
+                        href="{{ route('dashboard') }}"
+                        class="w-[100px] md:w-[120px] h-9 md:h-10 inline-flex items-center justify-center rounded-full bg-amber-400 hover:bg-amber-500 transition duration-200 text-white text-sm font-medium z-10"  
+                    >
+                        Dashboard
+                    </a>
+                @else
+                    <a
+                        href="{{ route('login') }}"
+                        class="w-[100px] md:w-[120px] h-9 md:h-10 inline-flex items-center justify-center rounded-full bg-amber-400 hover:bg-amber-500 transition duration-200 text-white text-sm font-medium z-10"  
+                    >
+                        Log In
+                    </a>
+                @endauth
+            @endif
+        </div>
 
         <!-- Main Content -->
-        <div class="flex-1 px-[5%] ml-[10%] py-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
+        <div class="flex-1 px-6 md:px-[5%] py-10 md:py-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 relative">
 
             <!-- Text Content -->
-            <div class="max-w-2xl">
-                <h1 class="text-4xl lg:text-6xl font-bold text-blue-950 leading-tight">
+            <div class="max-w-2xl z-10">
+                <h1 class="text-3xl md:text-4xl lg:text-6xl font-bold text-blue-950 leading-tight">
                     Real-Time Inventory Control to Manage
                     <span class="text-amber-400"> Gold Stock</span>
                 </h1>
-                <p class="mt-6 text-blue-950/70 text-base font-normal text-justify">
+                <p class="mt-6 text-blue-950/70 text-sm md:text-base font-normal text-justify">
                     A secure gold inventory system for staff to track, manage, and monitor gold assets in real-time—anytime, anywhere.
                 </p>
             </div>
 
-       
-            <div class="max-w-3xl">
-                <img src="{{ asset('images/landingimage.png') }}" alt="gold" class="w-full h-auto ">
+            <!-- Landing Image (hidden on mobile, only visible lg+) -->
+            <div class="max-w-3xl hidden lg:block z-10">
+                <img src="{{ asset('images/landingimage.png') }}" alt="gold" class="w-full h-auto">
             </div>
 
-            {{-- <div class="position absolute right-0 h-[60%] top-0">
-                <img src="{{ asset('images/yellowsvg.svg') }}" alt="gold" class="w-full">
-            </div> --}}
-
-            {{-- nnti main  --}}
-            {{-- <img src="{{ asset('images/bluesvg.svg') }}" alt="gold" class="w-[60%] position absolute right-[-3%] h-[55%] top-[20%]"> --}}
-            <img src="{{ asset('images/yellowsvg.svg') }}" alt="gold" class="w-full position absolute right-[-25%] h-[95%] top-0">
-            
+            <!-- Yellow Background SVG (always visible) -->
+            <img src="{{ asset('images/yellowsvg.svg') }}" alt="gold" 
+                 class="absolute right-[-20%] md:right-[-10%] top-0 h-[70%] md:h-[85%] lg:h-[95%] object-cover z-0">
         </div>
 
         @if (Route::has('login'))

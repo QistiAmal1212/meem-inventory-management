@@ -16,19 +16,19 @@
     <body class="min-h-screen bg-white !light">
 
 <div class="flex h-screen"   x-data="{ open: true }" >
-    <x-layouts.app.sidebar />
-    
+ 
+   <x-layouts.app.sidebar />
+   
      <x-toast-qisti />
 
    
     <!-- Main content (scrollable) -->
-    <div class="pt-16 px-2 lg:px-2 overflow-y-auto flex-1 bg-neutral-50 h-[100vh]" data-flux-main>
-        <br>
+    <div class="pt-16 px-2 lg:px-2 overflow-y-auto flex-1 bg-neutral-50 h-[100vh]" >
+          <x-layouts.app.navbar /> <br>
         {{ $slot }}
         
     </div>
-    <x-layouts.app.navbar />
-  
+    
 </div>
  
         @livewire('notifications')

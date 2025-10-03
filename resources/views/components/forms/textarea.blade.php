@@ -13,7 +13,7 @@
         name="{{ $name }}"
         id="{{ $id }}"
         rows="{{ $rows }}"
-        x-model="{{ $name }}"
+        {{-- x-model="{{ $name }}" --}}
         class="mt-1 w-full bg-white rounded-md outline outline-1 outline-gray-200 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-yellow-400"
         maxlength="{{ $maxlength }}"
         placeholder="{{ $placeholder }}"

@@ -71,21 +71,30 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 };
 ?>
-
 {{-- col1 --}}
-<div class="w-[60%] relative left-[-15%] top-[-10%]">
-    <x-auth-header 
+<div class="w-full sm:w-[80%] md:w-[70%] lg:w-[60%] mx-auto relative lg:left-[-15%] lg:top-[-10%] px-4 sm:px-6">
+
+    <!-- Header -->
+    {{-- <x-auth-header 
         :title="__('Log in to your account')" 
         :description="__('Enter your email and password below to log in')" 
-    />
+    /> --}}
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="login" class="w-full flex flex-col gap-6">
+    <!-- Form -->
+    <form wire:submit="login" class="w-full flex flex-col gap-6 mt-6">
+
+        <!-- Logo -->
+        <div class="flex justify-center mb-6">
+            <img src="{{ asset('images/meemgoldlogo.png') }}" 
+                 alt="Meem Gold Logo" 
+                 class="w-32 sm:w-40 md:w-48 h-auto" />
+        </div>
+
         <!-- Email Address -->
         <div class="w-full">
-            <img  src="{{ asset('images/meemgoldlogo.png') }}" alt="Meem Gold Logo" />
             <label for="email" class="block text-sm font-medium text-gray-700">
                 {{ __('Email address') }}
             </label>
@@ -156,7 +165,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {{-- Register link (optional) --}}
     {{-- 
     @if (Route::has('register'))
-        <div class="text-center text-sm text-zinc-600">
+        <div class="text-center text-sm text-zinc-600 mt-6">
             <span>{{ __('Don\'t have an account?') }}</span>
             <a href="{{ route('register') }}" class="text-yellow-600 hover:underline">
                 {{ __('Sign up') }}

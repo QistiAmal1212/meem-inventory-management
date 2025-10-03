@@ -68,19 +68,19 @@ class Product extends Model
         return $this->hasMany(ProductInOut::class);
     }
 
- public function productStock(): HasOne
-{
-    $branchId = session('branch_id');
-
-    return $this->hasOne(ProductStock::class)
-                ->where('branch_id', $branchId);
-}
-
-
-    public function productSale(): HasMany
+    public function productStock(): HasOne
     {
-        return $this->hasMany(productSale::class);
+        $branchId = session('branch_id');
+        // dd($branchId);
+        return $this->hasOne(ProductStock::class, 'product_id', 'id')
+                    ->where('branch_id', $branchId);
     }
+
+
+    // public function productSale(): HasMany
+    // {
+    //     return $this->hasMany(productSale::class);
+    // }
 
     protected function statusBadge(): Attribute
     {

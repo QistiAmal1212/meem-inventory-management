@@ -3,7 +3,7 @@
 use App\Models\References\Branch;
 use App\Events\BranchSelected;
 use Livewire\Volt\Component;
-
+use Illuminate\Support\Facades\Session;
 new class extends Component
 {
     public ?int $selectedBranchId = null;
@@ -15,6 +15,11 @@ new class extends Component
 
         $this->branches = Branch::get(['id', 'name']);
         $first = $this->branches->first();
+        if (!session('branch_id')) {
+      
+            Session::put('branch_id',  $first?->id);
+}
+
         $this->selectedBranchId = session('branch_id', $first?->id);
         // $this->selectedBranchId = $first?->id;
     }
@@ -26,6 +31,11 @@ new class extends Component
 
         // Optional: fire event
         event(new BranchSelected($value));
+
+        // dd(session('branch_id'));
+        $this->dispatch('branch-changed', [
+        'branch_id' => $value,
+    ]);
     }
 };
 ?>

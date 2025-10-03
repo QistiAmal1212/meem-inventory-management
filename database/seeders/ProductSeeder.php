@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use App\Models\ProductInOut;
 use App\Models\ProductStock;
 use App\Models\References\Branch;
 use App\Models\References\ProductCategory;
@@ -191,54 +192,6 @@ class ProductSeeder extends Seeder
                 ],
             ];
 
-            // $productSales = [
-            //     [
-            //     'id' => $productSaleId + 1,
-            //     'product_id' => 1,
-            //     'user_id' => 1,
-            //     'branch_id' => $branch->id,
-            //     'quantity' => rand(1, 100),
-            //     'remark' => null,
-            //     'sale_timestamp' => now(),
-            //    ],
-            //    [
-            //     'id' => $productSaleId + 1,
-            //     'product_id' => 2,
-            //     'user_id' => 1,
-            //     'branch_id' => $branch->id,
-            //     'quantity' => rand(1, 100),
-            //     'remark' => null,
-            //     'sale_timestamp' => now(),
-            //   ],
-            //   [
-            //     'id' => $productSaleId + 1,
-            //     'product_id' => 3,
-            //     'user_id' => 1,
-            //     'branch_id' => $branch->id,
-            //     'quantity' => rand(1, 100),
-            //     'remark' => null,
-            //     'sale_timestamp' => now(),
-            //   ],
-            //   [
-            //     'id' => $productSaleId + 1,
-            //     'product_id' => 4,
-            //     'user_id' => 1,
-            //     'branch_id' => $branch->id,
-            //     'quantity' => rand(1, 100),
-            //     'remark' => null,
-            //     'sale_timestamp' => now(),
-            //   ],
-            //   [
-            //     'id' =>$productSaleId + 1,
-            //     'product_id' => 5,
-            //     'user_id' => 1,
-            //     'branch_id' => $branch->id,
-            //     'quantity' => rand(1, 100),
-            //     'remark' => null,
-            //     'sale_timestamp' => now(),
-            //   ],
-            // ];
-
             foreach ($productStocks as $stock) {
                 ProductStock::firstOrCreate(
                     [
@@ -253,16 +206,253 @@ class ProductSeeder extends Seeder
                 );
             }
 
-            // foreach ($productSales as $sale) {
-            //     ProductGrade::firstOrCreate(
-            //         ['id' => $sale['id']],
-            //         ['product_id' => $sale['product_id']],
-            //         ['user_id' => $sale['user_id']],
-            //         ['branch_id' => $sale['branch_id']],
-            //         ['quantity' => $sale['quantity']],
-            //         ['remark' => $sale['remark']],
-            //         ['sale_timestamp' => $sale['sale_timestamp']],
-            //     );
+            $productIn = [
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 1,
+                    'user_id'=> 1,
+                    'event'=> 1,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 1,
+                    'user_id'=> 2,
+                    'event'=> 1,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(2),
+                    'updated_at' => now()->subHours(2),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 1,
+                    'user_id'=> 1,
+                    'event'=> 1,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(4),
+                    'updated_at' => now()->subHours(4),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 1,
+                    'user_id'=> 1,
+                    'event'=> 1,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(5),
+                    'updated_at' => now()->subHours(5),
+                ],
+
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 1,
+                    'user_id'=> 1,
+                    'event'=> 1,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subMinutes(30),
+                    'updated_at' => now()->subMinutes(30),
+                ],
+
+                
+
+              
+            ];
+
+       
+            $productOut = [
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 2,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 2,
+                    'user_id'=> 2,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(2),
+                    'updated_at' => now()->subHours(2),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 2,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(4),
+                    'updated_at' => now()->subHours(4),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 2,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(5),
+                    'updated_at' => now()->subHours(5),
+                ],
+
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 2,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subMinutes(30),
+                    'updated_at' => now()->subMinutes(30),
+                ],
+
+                
+
+              
+            ];
+
+
+            $productSales = [
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 3,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 3,
+                    'user_id'=> 2,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(2),
+                    'updated_at' => now()->subHours(2),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 3,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(4),
+                    'updated_at' => now()->subHours(4),
+                ],
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 3,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subHours(5),
+                    'updated_at' => now()->subHours(5),
+                ],
+
+                [
+                    'product_id' => 1,
+                    'branch_id'=> $branch->id,
+                    'in_out'=> 3,
+                    'user_id'=> 1,
+                    'event'=> 2,
+                    'quantity'=> rand(1, 100),
+                    'remark'=> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    'created_at' => now()->subMinutes(30),
+                    'updated_at' => now()->subMinutes(30),
+                ],
+
+                
+
+              
+            ];
+
+
+            foreach ($productIn as $in) {
+                ProductInOut::Create(
+                    [
+                        'product_id' => $in['product_id'],
+                        'branch_id'=> $in['branch_id'],
+                        'in_out'=>$in['in_out'],
+                        'user_id'=> $in['user_id'],
+                        'event'=> $in['event'],
+                        'quantity'=> $in['quantity'],
+                        'remark'=> $in['remark'],
+                        'created_at' => $in['created_at'],
+                        'updated_at' => $in['updated_at'],
+                    ],
+    
+                );
+                  
+            }
+
+            foreach ($productOut as $out) {
+                ProductInOut::Create(
+                    [
+                        'product_id' => $out['product_id'],
+                        'branch_id'=> $out['branch_id'],
+                        'in_out'=>$out['in_out'],
+                        'user_id'=> $out['user_id'],
+                        'event'=> $out['event'],
+                        'quantity'=> $out['quantity'],
+                        'remark'=> $out['remark'],
+                        'created_at' => $out['created_at'],
+                        'updated_at' => $out['updated_at'],
+                    ],
+    
+                );
+                  
+            }
+
+            foreach ($productSales as $sale) {
+                ProductInOut::Create(
+                    [
+                        'product_id' => $sale['product_id'],
+                        'branch_id'=> $sale['branch_id'],
+                        'in_out'=>$sale['in_out'],
+                        'user_id'=> $sale['user_id'],
+                        'event'=> $sale['event'],
+                        'quantity'=> $sale['quantity'],
+                        'remark'=> $sale['remark'],
+                        'created_at' => $sale['created_at'],
+                        'updated_at' => $sale['updated_at'],
+                    ],
+    
+                );
+                  
+            }
+
+        
             // }
 
         }

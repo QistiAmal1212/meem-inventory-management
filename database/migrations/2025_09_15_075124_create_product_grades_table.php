@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_grades', function (Blueprint $table) {
             $table->id();
-            $table->decimal('grade', 4, 1);
+            $table->float('grade', 4, 1);
             $table->timestamps();
         });
     }
