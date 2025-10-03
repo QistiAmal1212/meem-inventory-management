@@ -88,7 +88,7 @@
                         ( {{ $item->quantity }} Qty )
                     </p>
                     @if($item->remark)
-                        <p class="mt-2 text-sm text-gray-500 italic">“{{ $item->remark }}”</p>
+                        <p class="mt-2 text-sm text-gray-500 italic">“{{ $item?->remark }}”</p>
                     @endif
                 </div>
             </li>

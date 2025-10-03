@@ -115,7 +115,7 @@ class Product extends Component
             Excel::import(new ProductsImport, $this->file->getRealPath());
            
     $this->banner()
-    ->leave(seconds: 2)
+    // ->leave(seconds: 2)
     ->success('Done!', 'Your data has been upload!')
     ->send();
 

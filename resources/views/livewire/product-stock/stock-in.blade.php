@@ -1,4 +1,4 @@
-<div x-data="{ open: @entangle('showModal') }" x-cloak>
+<div x-data="stockForm()" x-cloak>
     <!-- Overlay -->
     <div 
         x-show="open"
@@ -56,36 +56,38 @@
 
         <!-- Body (scrollable) -->
         <div class="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+            
             <!-- Product Info -->
-             <!-- Grade -->
              <div class="space-y-1">
                 <x-forms.label label="Product" required="true" />
                 <x-select-searchable-qisti 
-                    placeholder="Select grade" 
-                    name="grade" 
-                    model="grade" 
+                   :options="$productList" 
+                    placeholder="Select Product" 
+                    name="productSelected" 
+                    model="productSelected" 
+                    value="{{$product?->id}}"
                 />
             </div>
-            <!-- Weight -->
+            <!-- Quantity -->
             <x-forms.input-number 
                 label="Quantity" 
-                name="weight" 
-                placeholder="Enter product weight" 
+                name="quantity" 
+                placeholder="Enter quantity" 
                 required 
-                maxlength="30" 
             />
 
-            <!-- Grade -->
+            <!-- In or oUT -->
             <div class="space-y-1">
-                <x-forms.label label="category" required="true" />
+                <x-forms.label label="Category" required="true" />
                 <x-select-searchable-qisti 
-                    placeholder="Select grade" 
-                    name="grade" 
-                    model="grade" 
+                    placeholder="Select Action Category" 
+                    name="categorySelected" 
+                    model="categorySelected" 
+                    :options="$categoryList" 
                 />
             </div>
 
-            <!-- Description -->
+            <!-- remark -->
             <x-forms.textarea 
                 label="remark" 
                 name="remark" 
@@ -143,8 +145,54 @@
                 <input type="hidden" x-ref="photo" wire:model="photo">
             </div>
             
-            <script>
-            function cameraHandler() {
+            
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+            <button 
+                type="button" 
+                @click="open = false"
+                class="px-4 py-2 rounded-lg text-gray-700 bg-white hover:bg-gray-100 transition font-medium border"
+            >
+                Cancel
+            </button>
+            
+            <button 
+                type="button" 
+                @click="submit()"
+                class="px-5 py-2 rounded-lg bg-yellow-500 text-white font-medium hover:bg-yellow-600 shadow-sm transition"
+            >
+                Save
+            </button>
+        </div>
+    </div>
+
+<script>
+    function stockForm() {
+        return {
+            productSelected: @entangle('productSelected'),
+            categorySelected: @entangle('categorySelected'),
+            remark: @entangle('remark'),
+            images: @entangle('images'),
+            open: @entangle('showModal'),
+       
+
+            errors: {},
+
+             submit() {
+                console.log('BITCH');
+                this.errors = {};
+                // if (!this.productSelected) this.errors.productSelected = true;
+                // if (!this.categorySelected) this.errors.categorySelected = true;
+                // if (!this.productSelected || !this.categorySelected ) return;
+                @this.call('save');
+            },
+           
+        }
+    }
+
+    function cameraHandler() {
                 return {
                     video: null,
                     stream: null,
@@ -187,27 +235,7 @@
                     }
                 }
             }
-            </script>
-            
-        </div>
+ </script>
+    
 
-        <!-- Footer -->
-        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
-            <button 
-                type="button" 
-                @click="open = false"
-                class="px-4 py-2 rounded-lg text-gray-700 bg-white hover:bg-gray-100 transition font-medium border"
-            >
-                Cancel
-            </button>
-            
-            <button 
-                type="button" 
-                wire:click="save"
-                class="px-5 py-2 rounded-lg bg-yellow-500 text-white font-medium hover:bg-yellow-600 shadow-sm transition"
-            >
-                Save
-            </button>
-        </div>
-    </div>
 </div>

@@ -13,18 +13,39 @@ class StockIn extends Component
     public $productId;
     public $product;
     public $grades;
+    public $productList = [];
+    public $categoryList = [];
+    public $categorySelected;
+    public $productSelected;
+    public $images;
+    public $remark;
 
     #[On('stock-in-form')] 
     public function openModal($productId)
     {
-      $this->productId = $productId;
-      $this->showModal = true;
-      $this->product = Product::find($productId);
+    
+      $this->showModal = true; 
+
+      if($productId)
+      {
+       $this->productId = $productId;
+       $this->product = Product::find($productId);
+      }
+
     }
+
+    public function save()
+    {
+     dd('bitch');
+    }
+
+
 
     public function render()
     {
-        $this->grades = ProductGrade::pluck('grade', 'id')->toArray();
+        $this->productList = Product::pluck('name', 'id')->toArray();
+        $this->categoryList = ['1' => 'Restock','2' => 'Stock Out', '3' => 'Sales'];
+        
         return view('livewire.product-stock.stock-in');
     }
 }

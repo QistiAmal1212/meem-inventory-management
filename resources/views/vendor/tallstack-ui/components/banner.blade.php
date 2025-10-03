@@ -29,7 +29,9 @@
              x-transition:leave="transition ease-in duration-300"
              x-transition:leave-start="translate-y-0"
              x-transition:leave-end="-translate-y-10"
-        @endif>
+        @endif
+        style="z-index:100;"
+        >
         @if ($left)
             <span @if (!is_string($left)) {{
                     $left->attributes->class([$personalize['slot.left'], $colors['text'] ?? '' => !$wire])
@@ -42,6 +44,7 @@
                 {!! $left !!}
             </span>
         @endif
+
         @if ($wire)
             <div @class([$personalize['text'], 'flex justify-center items-center gap-2'])>
                 {{-- <div x-cloak x-show="type === 'success'">
