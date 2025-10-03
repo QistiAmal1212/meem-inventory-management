@@ -7,16 +7,20 @@ use App\Models\ProductImage;
 use App\Models\References\ProductCategory;
 use App\Models\References\ProductGrade;
 use App\Models\References\ProductMetal;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use TallStackUi\Traits\Interactions;
 
 #[Layout('components.layouts.app')]
 class EditProduct extends Component
-{
+{   use Interactions;
+    use WithFileUploads;
     public $product;
 
     public $removeFile = [];
@@ -87,11 +91,16 @@ class EditProduct extends Component
 
     public function removeExistingImage($index)
     {
+        
+       
+      
         if (isset($this->images[$index]) && ($this->images[$index]['existing'] ?? false)) {
+           
             $imagePath = Str::after(parse_url($this->images[$index]['url'], PHP_URL_PATH), '/storage/');
             $this->removeFile[] = $imagePath;
             array_splice($this->images, $index, 1);
         }
+     
     }
 
     public function submit()
@@ -113,31 +122,36 @@ class EditProduct extends Component
                 'description' => $this->description,
             ]);
 
+         
             // delete images
             foreach ($this->removeFile as $path) {
                 ProductImage::where('path', $path)->delete();
                 Storage::disk('public')->delete($path);
             }
 
+         
             // store new images
             foreach ($this->images as $image) {
-                if (! empty($image['url']) && str_contains($image['url'], ',')) {
-                    [$meta, $content] = explode(',', $image['url'], 2);
-
-                    // extract mime type → extension
+             
+                if (! empty($image['file']) && str_contains($image['file'], ',')) {
+                    [$meta, $content] = explode(',', $image['file'], 2);
+                
                     preg_match('/data:image\/(\w+);base64/', $meta, $matches);
                     $ext = $matches[1];
-
+                
                     $filename = uniqid('', true).'.'.$ext;
                     $path = "products/$filename";
-
+                
                     Storage::disk('public')->put($path, base64_decode($content));
-
+                
                     $this->product->images()->create(['path' => $path]);
                 }
             }
-            session()->flash('toast', ['type' => 'success', 'message' => 'Product Update successfully!', 'description' => 'The product has been permanently update to the database.',
-            ]);
+            $this->banner()
+            ->leave(seconds: 2)
+            ->flash()
+            ->success('Done!', 'Product updated successfully!')
+            ->send();
 
             return redirect()->route('product', $this->product->id);
 

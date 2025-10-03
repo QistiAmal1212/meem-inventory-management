@@ -59,6 +59,8 @@ class CreateProduct extends Component
 
     public $showModal = false;
 
+    public $product;
+
     public function mount()
     {
         $this->categories = ProductCategory::pluck('name', 'id')->toArray();
@@ -108,7 +110,7 @@ class CreateProduct extends Component
             ]);
 
             // Save to DB
-            $product = Product::create([
+            $this->product = Product::create([
                 'name' => $this->name,
                 'sku' => $this->reference,
                 'category_id' => $this->selectedCategory,
@@ -120,19 +122,19 @@ class CreateProduct extends Component
             ]);
 
             foreach ($this->images as $image) {
-                if (! empty($image['url']) && str_contains($image['url'], ',')) {
-                    [$meta, $content] = explode(',', $image['url'], 2);
-
-                    // extract mime type → extension
+             
+                if (! empty($image['file']) && str_contains($image['file'], ',')) {
+                    [$meta, $content] = explode(',', $image['file'], 2);
+                
                     preg_match('/data:image\/(\w+);base64/', $meta, $matches);
-                    $ext = $matches[1] ?? 'png';
-
+                    $ext = $matches[1];
+                
                     $filename = uniqid('', true).'.'.$ext;
                     $path = "products/$filename";
-
+                
                     Storage::disk('public')->put($path, base64_decode($content));
-
-                    $product->images()->create(['path' => $path]);
+                
+                    $this->product->images()->create(['path' => $path]);
                 }
             }
             $this->banner()
@@ -142,7 +144,7 @@ class CreateProduct extends Component
             ->send();
             // session()->flash('toast', ['type' => 'success', 'message' => 'Product added successfully!', 'description' => 'The product has been permanently saved to the database.']);
 
-            return redirect()->route('product', $product->id);
+            return redirect()->route('product', $this->product->id);
 
         } catch (ValidationException $e) {
             $this->modalMessage = $e->errors();

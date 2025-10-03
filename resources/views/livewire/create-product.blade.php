@@ -68,6 +68,7 @@
                 if (!this.reference) this.errors.reference = true;
                 // if (this.selectedFiles.length === 0) this.errors.images = true;
                 if (!this.name || !this.selectedCategory || !this.weight || !this.selectedMetal || !this.selectedGrade || !this.reference ||  this.selectedFiles.length === 0 ) return;
+                @this.set('images', this.selectedFiles)
                 @this.call('submit');
             },
     
@@ -103,21 +104,28 @@
             },
 
             addFiles(event) {
-                Array.from(event.target.files).forEach(file => {
+          Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
                     this.selectedFiles.push({
-                        file,
-                        url: URL.createObjectURL(file)
+                        file: e.target.result, // ✅ base64 string
+                        name: file.name,
+                        url: URL.createObjectURL(file) // for preview only
                     });
-                });
-                this.errors.images = "";
-                event.target.value = '';
-    
-            },
+                };
+                reader.readAsDataURL(file); // convert to base64
+            });
+
+            this.errors.images = "";
+            event.target.value = '';
+        },
+
             removeFile(index) {
-                this.selectedFiles.splice(index, 1);
-                if(!this.selectedFiles.length){
-                    this.errors.images = 1;
-                }
+                @this.removeExistingImage(index);
+                // this.selectedFiles.splice(index, 1);
+                // if(!this.selectedFiles.length){
+                //     this.errors.images = 1;
+                // }
             },
            
         }
