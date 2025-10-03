@@ -147,8 +147,10 @@ class CreateProduct extends Component
         } catch (ValidationException $e) {
             $this->modalMessage = $e->errors();
             $this->showModal = true;
+            dd($e->getMessage());
 
         } catch (\Exception $e) {
+            dd($e->getMessage());
             Log::error($e->getMessage());
         }
     }

@@ -67,6 +67,9 @@
                     model="productSelected" 
                     value="{{$product?->id}}"
                 />
+                <p x-cloak x-show="(errors.productSelected && !productSelected)" class="text-xs text-red-500">
+                    product is required.
+                </p>
             </div>
             <!-- Quantity -->
             <x-forms.input-number 
@@ -85,6 +88,9 @@
                     model="categorySelected" 
                     :options="$categoryList" 
                 />
+                <p x-cloak x-show="(errors.categorySelected && !categorySelected)" class="text-xs text-red-500">
+                    category is required.
+                </p>
             </div>
 
             <!-- remark -->
@@ -173,6 +179,7 @@
         return {
             productSelected: @entangle('productSelected'),
             categorySelected: @entangle('categorySelected'),
+            quantity: @entangle('quantity'),
             remark: @entangle('remark'),
             images: @entangle('images'),
             open: @entangle('showModal'),
@@ -183,9 +190,10 @@
              submit() {
                 console.log('BITCH');
                 this.errors = {};
-                // if (!this.productSelected) this.errors.productSelected = true;
-                // if (!this.categorySelected) this.errors.categorySelected = true;
-                // if (!this.productSelected || !this.categorySelected ) return;
+                if (!this.productSelected) this.errors.productSelected = true;
+                if (!this.quantity) this.errors.quantity = true;
+                if (!this.categorySelected) this.errors.categorySelected = true;
+                if (!this.productSelected || !this.categorySelected || !this.quantity) return;
                 @this.call('save');
             },
            

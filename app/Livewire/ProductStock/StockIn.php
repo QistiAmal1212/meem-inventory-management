@@ -19,6 +19,7 @@ class StockIn extends Component
     public $productSelected;
     public $images;
     public $remark;
+    public $quantity;
 
     #[On('stock-in-form')] 
     public function openModal($productId)

@@ -9,7 +9,7 @@
   </div>
 
   <!-- Table card -->
-  <div class="bg-white rounded-lg  border border-gray-200 px-4 w-full max-w-screen-xl mx-auto">
+  <div class="bg-white rounded-lg  border border-gray-200 px-4 w-full  mx-auto">
 
    {{-- table action --}}
    <div class="flex flex-wrap items-center gap-3 pt-4 mb-6">

@@ -66,7 +66,7 @@
                 if (!this.selectedMetal) this.errors.metal = true;
                 if (!this.selectedGrade) this.errors.grade = true;
                 if (!this.reference) this.errors.reference = true;
-                if (this.selectedFiles.length === 0) this.errors.images = true;
+                // if (this.selectedFiles.length === 0) this.errors.images = true;
                 if (!this.name || !this.selectedCategory || !this.weight || !this.selectedMetal || !this.selectedGrade || !this.reference ||  this.selectedFiles.length === 0 ) return;
                 @this.call('submit');
             },
